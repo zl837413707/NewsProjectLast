@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import {
   DesktopOutlined,
@@ -20,6 +20,9 @@ const iconList = {
 
 export default function SideMenu() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const OpenKeys = '/' + location.pathname.split('/')[1]
+  console.log(OpenKeys);
   const [menu, setMenu] = useState([])
   useEffect(() => {
     const getData = async () => {
@@ -50,7 +53,7 @@ export default function SideMenu() {
   return (
     <Sider trigger={null} collapsible className="side" >
       <div className="logo" >ニュース管理システム</div>
-      <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={menu} onClick={(menu) => { navigate(menu.key) }} />
+      <Menu theme="dark" selectedKeys={[`${location.pathname}`]} defaultOpenKeys={[`${OpenKeys}`]} mode="inline" items={menu} onClick={(menu) => { navigate(menu.key) }} />
     </Sider>
   )
 }
