@@ -1,10 +1,216 @@
 {
   "posts": [
-    { "id": 1, "title": "json-server", "author": "typicode" },
-    { "id": 2, "title": "json-server2", "author": "typicode2" }
+    { "id": 1, "label": "json-server", "author": "typicode" },
+    { "id": 2, "label": "json-server2", "author": "typicode2" }
   ],
   "comments": [
     { "id": 1, "body": "some comment", "postId": 1 }
   ],
-  "profile": { "name": "typicode" }
+  "children": [
+    {
+      "id": 3,
+      "label": "添加用户",
+      "rightId": 2,
+      "key": "/user-manage/add",
+      "grade": 2
+    },
+    {
+      "id": 4,
+      "label": "删除用户",
+      "rightId": 2,
+      "key": "/user-manage/delete",
+      "grade": 2
+    },
+    {
+      "id": 5,
+      "label": "修改用户",
+      "rightId": 2,
+      "key": "/user-manage/update",
+      "grade": 2
+    },
+    {
+      "id": 6,
+      "label": "用户列表",
+      "rightId": 2,
+      "key": "/user-manage/list",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 8,
+      "label": "角色列表",
+      "rightId": 7,
+      "key": "/right-manage/role/list",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 9,
+      "label": "权限列表",
+      "rightId": 7,
+      "key": "/right-manage/right/list",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 10,
+      "label": "修改角色",
+      "rightId": 7,
+      "key": "/right-manage/role/update",
+      "grade": 2
+    },
+    {
+      "id": 11,
+      "label": "删除角色",
+      "rightId": 7,
+      "key": "/right-manage/role/delete",
+      "grade": 2
+    },
+    {
+      "id": 12,
+      "label": "修改权限",
+      "rightId": 7,
+      "key": "/right-manage/right/update",
+      "grade": 2
+    },
+    {
+      "id": 13,
+      "label": "删除权限",
+      "rightId": 7,
+      "key": "/right-manage/right/delete",
+      "grade": 2
+    },
+    {
+      "id": 15,
+      "label": "新闻列表",
+      "rightId": 14,
+      "key": "/news-manage/list",
+      "grade": 2
+    },
+    {
+      "id": 16,
+      "label": "撰写新闻",
+      "rightId": 14,
+      "key": "/news-manage/add",
+      "grade": 2,
+      "pagepermisson": 1
+    },
+    {
+      "id": 17,
+      "label": "新闻更新",
+      "rightId": 14,
+      "key": "/news-manage/update/:id",
+      "grade": 2,
+      "routepermisson": 1
+    },
+    {
+      "id": 18,
+      "label": "新闻预览",
+      "rightId": 14,
+      "key": "/news-manage/preview/:id",
+      "grade": 2,
+      "routepermisson": 1
+    },
+    {
+      "id": 19,
+      "label": "草稿箱",
+      "rightId": 14,
+      "key": "/news-manage/draft",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 20,
+      "label": "新闻分类",
+      "rightId": 14,
+      "key": "/news-manage/category",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 22,
+      "label": "审核新闻",
+      "rightId": 21,
+      "key": "/audit-manage/audit",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 23,
+      "label": "审核列表",
+      "rightId": 21,
+      "key": "/audit-manage/list",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 25,
+      "label": "待发布",
+      "rightId": 24,
+      "key": "/publish-manage/unpublished",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 26,
+      "label": "已发布",
+      "rightId": 24,
+      "key": "/publish-manage/published",
+      "pagepermisson": 1,
+      "grade": 2
+    },
+    {
+      "id": 27,
+      "label": "已下线",
+      "rightId": 24,
+      "key": "/publish-manage/sunset",
+      "pagepermisson": 1,
+      "grade": 2
+    }
+  ],
+  "rights": [
+    {
+      "id": 1,
+      "label": "首页",
+      "key": "/home",
+      "icon": "/home",
+      "pagepermisson": 1,
+      "grade": 1
+    },
+    {
+      "id": 2,
+      "label": "用户管理",
+      "key": "/user-manage",
+      "pagepermisson": 1,
+      "grade": 1
+    },
+    {
+      "id": 7,
+      "label": "权限管理",
+      "key": "/right-manage",
+      "pagepermisson": 1,
+      "grade": 1
+    },
+    {
+      "id": 14,
+      "label": "新闻管理",
+      "key": "/news-manage",
+      "pagepermisson": 1,
+      "grade": 1
+    },
+    {
+      "id": 21,
+      "label": "审核管理",
+      "key": "/audit-manage",
+      "pagepermisson": 1,
+      "grade": 1
+    },
+    {
+      "id": 24,
+      "label": "发布管理",
+      "key": "/publish-manage",
+      "pagepermisson": 1,
+      "grade": 1
+    }
+  ]
 }
