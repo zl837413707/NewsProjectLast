@@ -14,7 +14,7 @@ const { Content } = Layout;
 
 export default function NewsSandBox() {
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ minHeight: '100vh', }}>
       <SideMenu />
       <Layout style={{ minWidth: '1000px' }}>
         <TopHeader />
@@ -23,7 +23,9 @@ export default function NewsSandBox() {
             margin: '24px 16px',
             padding: 24,
             minHeight: 280,
-            backgroundColor: '#fff'
+            maxHeight: '88vh',
+            backgroundColor: '#fff',
+            overflowY: 'auto'
           }}
         >
           <Routes>

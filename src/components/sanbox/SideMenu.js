@@ -22,7 +22,6 @@ export default function SideMenu() {
   const navigate = useNavigate();
   const location = useLocation();
   const OpenKeys = '/' + location.pathname.split('/')[1]
-  console.log(OpenKeys);
   const [menu, setMenu] = useState([])
   useEffect(() => {
     const getData = async () => {
@@ -35,16 +34,21 @@ export default function SideMenu() {
             res.children.forEach((item) => {
               delete item["rightId"]
             })
-            //过滤下数组,有pagepermisson的数据代表着是菜单栏可以显示的权限(导致没有权限的数据显示不出来,后面有问题想办法解决！！！！！！！！)
+            //过滤下孩子数组,有pagepermisson=1的数据代表着是菜单栏可以显示的权限(导致没有权限的数据显示不出来,后面有问题想办法解决！！！！！！！！)
             const newChildren = res.children.filter((item) => {
               return item.pagepermisson === 1;
             })
+            // res = newRes
             res["children"] = newChildren
           } else {
             delete res["children"]
           }
         })
-        console.log(res.data);
+        //过滤下父亲数组,有pagepermisson=1的数据代表着是菜单栏可以显示的权限(导致没有权限的数据显示不出来,后面有问题想办法解决！！！！！！！！)
+        const newRes = res.data.filter((item) => {
+          return item.pagepermisson === 1;
+        })
+        res.data = newRes
         setMenu(res.data)
       })
     }

@@ -1,10 +1,22 @@
 {
   "posts": [
-    { "id": 1, "label": "json-server", "author": "typicode" },
-    { "id": 2, "label": "json-server2", "author": "typicode2" }
+    {
+      "id": 1,
+      "label": "json-server",
+      "author": "typicode"
+    },
+    {
+      "id": 2,
+      "label": "json-server2",
+      "author": "typicode2"
+    }
   ],
   "comments": [
-    { "id": 1, "body": "some comment", "postId": 1 }
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
   ],
   "children": [
     {
