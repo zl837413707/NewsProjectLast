@@ -50,7 +50,7 @@ export default function RIghtList() {
       render: (item) => {
         return <div>
           <Popover content={<div style={{ textAlign: 'center' }}><Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} checked={item.pagepermisson} onChange={() => switchMethod(item)}></Switch></div>} title="配置" trigger="click" >
-            <Button type="primary" shape="circle" icon={<SettingOutlined />} disabled={item.pagepermisson === undefined} />&nbsp;&nbsp;
+            <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<SettingOutlined />} disabled={item.pagepermisson === undefined} />
           </Popover >
           <Button danger shape="circle" icon={<DeleteOutlined />} onClick={() => showConfirm(item)} />
         </div >

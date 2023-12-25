@@ -29,11 +29,11 @@ export default function RoleList() {
       title: '操作',
       render: (item) => {
         return <div>
-          <Button type="primary" shape="circle" icon={<UnorderedListOutlined />} onClick={() => {
+          <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<UnorderedListOutlined />} onClick={() => {
             setIsModalOpen(true)
             setcurrentRightList(item.rights)
             setCurrentId(item.id)
-          }} />&nbsp;&nbsp;
+          }} />
           <Button danger shape="circle" icon={<DeleteOutlined />} onClick={() => showConfirm(item)} />
         </div >
       }
