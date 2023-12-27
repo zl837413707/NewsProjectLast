@@ -2,11 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import axios from 'axios'
 import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
+  PieChartOutlined, TeamOutlined, UserOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import './index.css'
@@ -24,6 +20,8 @@ export default function SideMenu() {
   const OpenKeys = '/' + location.pathname.split('/')[1]
   const [menu, setMenu] = useState([])
   useEffect(() => {
+    //这是从localStorage拿的,node的时候再考虑如何获取这些信息
+    const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
     const getData = async () => {
       await axios.get('http://localhost:8100/rights?_embed=children').then((res) => {
         // 为了删除空的children和rightId,真正做后端的时候可以删除下面的方法
@@ -36,7 +34,7 @@ export default function SideMenu() {
             })
             //过滤下孩子数组,有pagepermisson=1的数据代表着是菜单栏可以显示的权限(导致没有权限的数据显示不出来,后面有问题想办法解决！！！！！！！！)
             const newChildren = res.children.filter((item) => {
-              return item.pagepermisson === 1;
+              return item.pagepermisson === 1 && rights.includes(item.key);
             })
             // res = newRes
             res["children"] = newChildren
@@ -46,8 +44,9 @@ export default function SideMenu() {
         })
         //过滤下父亲数组,有pagepermisson=1的数据代表着是菜单栏可以显示的权限(导致没有权限的数据显示不出来,后面有问题想办法解决！！！！！！！！)
         const newRes = res.data.filter((item) => {
-          return item.pagepermisson === 1;
+          return item.pagepermisson === 1 && rights.includes(item.key);
         })
+        //这是从localStorage拿的,node的时候再考虑如何获取这些信息
         res.data = newRes
         setMenu(res.data)
       })

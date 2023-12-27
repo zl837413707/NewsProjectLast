@@ -17,15 +17,22 @@ export default function RIghtList() {
   const [currentId, setCurrentId] = useState(0)
   const addForm = useRef(null)
   const updateForm = useRef(null)
+  //本应该后端直接返回数据，node到时候看下能不能改
+  const { roleId, region, username } = JSON.parse(localStorage.getItem('token'))
+
 
   useEffect(() => {
     const getData = async () => {
       await axios.get('http://localhost:8100/users?_expand=role').then((res) => {
-        setDataSource(res.data)
+        // 如果是管理员直接展示所有数据,不是管理员根据id遍历
+        setDataSource(roleId === 1 ? res.data : [
+          ...res.data.filter(item => item.username === username),
+          ...res.data.filter(item => item.region === region && item.roleId === 3)
+        ])
       })
     }
     getData()
-  }, [])
+  }, [roleId, region, username])
   useEffect(() => {
     const getData = async () => {
       await axios.get('http://localhost:8100/regions').then((res) => {
@@ -76,15 +83,17 @@ export default function RIghtList() {
       title: '用户状态',
       dataIndex: 'roleState',
       render: (roleState, item) => {
-        return <Switch checked={roleState} disabled={item.default} onChange={() => handleChange(item)}></Switch>
+        console.log(item);
+        return <Switch checked={roleState} disabled={item.roleId === roleId ? true : item.default} onChange={() => handleChange(item)}></Switch>
       }
     },
     {
       title: '操作',
       render: (item) => {
+        console.log(item);
         return <div>
           <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<EditOutlined />} disabled={item.default} onClick={() => updateData(item)} />
-          <Button danger shape="circle" icon={<DeleteOutlined />} disabled={item.default} onClick={() => showConfirm(item)} />
+          <Button danger shape="circle" icon={<DeleteOutlined />} disabled={item.roleId === roleId ? true : item.default} onClick={() => showConfirm(item)} />
         </div >
       }
     }
@@ -125,20 +134,6 @@ export default function RIghtList() {
       console.log(err)
     })
   }
-  // //switch控制权限
-  // const switchMethod = (item) => {
-  //   item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
-  //   setDataSource([...dataSource])
-  //   if (item.grade === 1) {
-  //     axios.patch(`http://localhost:8100/rights/${item.id}`, {
-  //       pagepermisson: item.pagepermisson
-  //     })
-  //   } else {
-  //     axios.patch(`http://localhost:8100/children/${item.id}`, {
-  //       pagepermisson: item.pagepermisson
-  //     })
-  //   }
-  // }
 
   const handleChange = (item) => {
     axios.patch(`http://localhost:8100/users/${item.id}`, {
@@ -179,7 +174,10 @@ export default function RIghtList() {
   // Userデータ更新
   const getNewData = (key) => {
     axios.get(`http://localhost:8100/${key}?_expand=role`).then((res) => {
-      setDataSource(res.data)
+      setDataSource(roleId === 1 ? res.data : [
+        ...res.data.filter(item => item.username === username),
+        ...res.data.filter(item => item.region === region && item.roleId === 3)
+      ])
     })
   }
 
@@ -190,14 +188,17 @@ export default function RIghtList() {
         追加
       </Button>
       <Table style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} rowKey={(item) => item.id} pagination={{
-        pageSize: 10
+        pageSize: 6
       }} />
       <Modal
         open={open}
         title="要員の追加"
         okText="確認"
         cancelText="キャンセル"
-        onCancel={() => { setOpen(false) }}
+        onCancel={() => {
+          setOpen(false)
+          addForm.current.resetFields()
+        }}
         onOk={addFormData}
       >
         <UserForm ref={addForm} regionList={regionList} roleList={roleList}></UserForm>
@@ -211,7 +212,7 @@ export default function RIghtList() {
         onOk={updateFormData}
       >
         <UserForm ref={updateForm} regionList={regionList} roleList={roleList} isDisabledUp={isDisabledUp}
-          getTime={Date.now()}></UserForm>
+          getTime={Date.now()} isedit={true}></UserForm>
       </Modal>
     </div>
   )

@@ -3,7 +3,7 @@
     {
       "id": 1,
       "username": "admin",
-      "password": 123456,
+      "password": "123",
       "roleState": true,
       "default": true,
       "region": "",
@@ -32,8 +32,8 @@
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "",
-      "roleId": 1,
+      "region": "亚洲",
+      "roleId": 2,
       "id": 4
     },
     {
@@ -320,7 +320,6 @@
       "roleName": "区域管理员",
       "roleType": 2,
       "rights": [
-        "/home",
         "/user-manage",
         "/user-manage/add",
         "/user-manage/delete",
@@ -339,7 +338,8 @@
         "/publish-manage",
         "/publish-manage/unpublished",
         "/publish-manage/published",
-        "/publish-manage/sunset"
+        "/publish-manage/sunset",
+        "/home"
       ]
     },
     {
