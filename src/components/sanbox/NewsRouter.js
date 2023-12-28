@@ -10,6 +10,7 @@ import Nopermission from '../../components/sanbox/Nopermission';
 import NewsAdd from '../../views/sanbox/news-manage/NewsAdd';
 import NewsDraft from '../../views/sanbox/news-manage/NewsDraft';
 import NewsCategory from '../../views/sanbox/news-manage/NewsCategory';
+import NewsPreview from '../../views/sanbox/news-manage/NewsPreview';
 import Audit from '../../views/sanbox/audit-manage/Audit';
 import AuditList from '../../views/sanbox/audit-manage/AuditList';
 import Unpublished from '../../views/sanbox/publish-manage/Unpublished';
@@ -26,6 +27,7 @@ export default function NewsRouter() {
       axios.get(`http://localhost:8100/rights`),
       axios.get(`http://localhost:8100/children`)
     ]).then((res) => {
+      console.log(res);
       setRouteList([...res[0].data, ...res[1].data])
       setLoading(false);
     })
@@ -38,6 +40,7 @@ export default function NewsRouter() {
     "/news-manage/add": <NewsAdd />,
     "/news-manage/draft": <NewsDraft />,
     "/news-manage/category": <NewsCategory />,
+    "/news-manage/preview/:id": <NewsPreview />,
     "/audit-manage/audit": <Audit />,
     "/audit-manage/list": <AuditList />,
     "/publish-manage/unpublished": <Unpublished />,
@@ -45,7 +48,7 @@ export default function NewsRouter() {
     "/publish-manage/sunset": <Sunset />
   }
   const isPerssion = (item) => {
-    return rights.includes(item.key) && item.pagepermisson === 1
+    return rights.includes(item.key) && (item.pagepermisson === 1 || item.routepermisson === 1)
   }
 
   if (loading) {

@@ -52,7 +52,7 @@ export default function SideMenu() {
       })
     }
     getData()
-  }, [])
+  }, [OpenKeys])
   return (
     <Sider trigger={null} collapsible className="side" >
       <div className="logo" >ニュース管理システム</div>

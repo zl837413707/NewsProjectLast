@@ -1,0 +1,6 @@
+.editorClassName{
+  border: 1px solid #ccc;
+  min-height: 250px;
+  max-height: 250px;
+  overflow-y: auto;
+}
