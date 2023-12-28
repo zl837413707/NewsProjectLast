@@ -91,7 +91,6 @@ export default function RoleList() {
   }
 
   const onCheck = (checkedKeys) => {
-    console.log(checkedKeys);
     setcurrentRightList(checkedKeys)
   }
 

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
-import axios from 'axios'
 import {
   PieChartOutlined, TeamOutlined, UserOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import './index.css'
+import AxiosInstance from '../../utils/axios';
 const { Sider } = Layout;
 
 const iconList = {
@@ -23,7 +23,7 @@ export default function SideMenu() {
     //这是从localStorage拿的,node的时候再考虑如何获取这些信息
     const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
     const getData = async () => {
-      await axios.get('http://localhost:8100/rights?_embed=children').then((res) => {
+      await AxiosInstance.get('/rights?_embed=children').then((res) => {
         // 为了删除空的children和rightId,真正做后端的时候可以删除下面的方法
         res.data.forEach((res) => {
           // 后端本身没有icon的信息,根据唯一的key值然后自定义一个iconList对象,每次遍历的时候让icon等于上面对象里的icon组件(成为一个新的数组使用)

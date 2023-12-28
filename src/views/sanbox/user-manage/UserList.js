@@ -83,14 +83,12 @@ export default function RIghtList() {
       title: '用户状态',
       dataIndex: 'roleState',
       render: (roleState, item) => {
-        console.log(item);
         return <Switch checked={roleState} disabled={item.roleId === roleId ? true : item.default} onChange={() => handleChange(item)}></Switch>
       }
     },
     {
       title: '操作',
       render: (item) => {
-        console.log(item);
         return <div>
           <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<EditOutlined />} disabled={item.default} onClick={() => updateData(item)} />
           <Button danger shape="circle" icon={<DeleteOutlined />} disabled={item.roleId === roleId ? true : item.default} onClick={() => showConfirm(item)} />

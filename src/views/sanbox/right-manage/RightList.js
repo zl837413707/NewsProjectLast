@@ -18,7 +18,6 @@ export default function RIghtList() {
             res.children = ''
           }
         })
-        console.log(dataSource);
         setDataSource(res.data)
       })
     }

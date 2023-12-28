@@ -5,6 +5,7 @@ const UserForm1 = forwardRef((props, ref) => {
   const [isDisabled, setIsDisabled] = useState(false)
   const [regionList, setRegionList] = useState([])
   const [roleList, setRoleList] = useState([])
+
   //这是从localStorage拿的,node的时候再考虑如何获取这些信息
   const { role: { roleName }, region, roleId } = JSON.parse(localStorage.getItem("token"))
   useEffect(() => {
