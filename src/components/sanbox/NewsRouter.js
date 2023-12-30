@@ -11,6 +11,7 @@ import NewsAdd from '../../views/sanbox/news-manage/NewsAdd';
 import NewsDraft from '../../views/sanbox/news-manage/NewsDraft';
 import NewsCategory from '../../views/sanbox/news-manage/NewsCategory';
 import NewsPreview from '../../views/sanbox/news-manage/NewsPreview';
+import NewsUpdate from '../../views/sanbox/news-manage/NewsUpdate';
 import Audit from '../../views/sanbox/audit-manage/Audit';
 import AuditList from '../../views/sanbox/audit-manage/AuditList';
 import Unpublished from '../../views/sanbox/publish-manage/Unpublished';
@@ -27,7 +28,6 @@ export default function NewsRouter() {
       axios.get(`http://localhost:8100/rights`),
       axios.get(`http://localhost:8100/children`)
     ]).then((res) => {
-      console.log(res);
       setRouteList([...res[0].data, ...res[1].data])
       setLoading(false);
     })
@@ -41,6 +41,7 @@ export default function NewsRouter() {
     "/news-manage/draft": <NewsDraft />,
     "/news-manage/category": <NewsCategory />,
     "/news-manage/preview/:id": <NewsPreview />,
+    "/news-manage/update/:id": <NewsUpdate />,
     "/audit-manage/audit": <Audit />,
     "/audit-manage/list": <AuditList />,
     "/publish-manage/unpublished": <Unpublished />,

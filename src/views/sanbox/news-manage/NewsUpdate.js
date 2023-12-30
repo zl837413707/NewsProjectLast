@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { Steps, Button, Form, Input, Select, message } from 'antd'
+import { ArrowLeftOutlined } from '@ant-design/icons';
 import style from './NewsAdd.module.css'
 import AxiosInstance from '../../../utils/axios'
 import NewEditor from '../../../components/news-manage/NewEditor'
@@ -8,6 +9,7 @@ import NewEditor from '../../../components/news-manage/NewEditor'
 export default function NewsAdd() {
   const [current, setCurrent] = useState(0)
   const [categoriesList, setCategoriesList] = useState([])
+  const { id } = useParams()
   const [newsInfo, setNewsInfo] = useState({})
   const [newsContent, setNewsContent] = useState('')
   const [form] = Form.useForm()
@@ -22,6 +24,16 @@ export default function NewsAdd() {
       setCategoriesList(newData)
     })
   }, [])
+
+  useEffect(() => {
+    AxiosInstance.get(`/news/${id}?_expand=category&_expand=role`).then((res) => {
+      form.setFieldsValue({
+        title: res.data.title,
+        categoryId: res.data.category.id
+      })
+      setNewsContent(res.data.content)
+    })
+  }, [form, id])
 
   const items = [
     {
@@ -41,6 +53,7 @@ export default function NewsAdd() {
   const handleNext = () => {
     if (current === 0) {
       form.validateFields().then((res) => {
+        console.log(res);
         //current0的数据
         setNewsInfo(res)
         setCurrent(current + 1)
@@ -48,29 +61,20 @@ export default function NewsAdd() {
         console.log(err);
       })
     } else {
-      console.log(newsContent);
       if (isEmptyContent(newsContent)) {
         message.error('新闻内容不能为空')
       } else {
         setCurrent(current + 1)
-        console.log(newsInfo, newsContent);
       }
 
     }
   }
 
   const hadleSubmit = (state) => {
-    AxiosInstance.post('/news', {
+    AxiosInstance.patch(`/news/${id}`, {
       ...newsInfo,
       "content": newsContent,
-      "region": userInfo.region ? userInfo.region : '全球',
-      "author": userInfo.username,
-      "roleId": userInfo.roleId,
       "auditState": state,
-      "publishState": 0,
-      "createTime": Date.now(),
-      "star": 0,
-      "view": 0,
       // "publishTime": 0
     }).then(() => {
       navigate(state === 0 ? '/news-manage/draft' : '/audit-manage/list')
@@ -87,6 +91,7 @@ export default function NewsAdd() {
 
   return (
     <div>
+      <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate('/news-manage/draft') }} ></Button>
       <Steps style={{ marginTop: 20 }}
         current={current}
         items={items}
@@ -100,7 +105,7 @@ export default function NewsAdd() {
               span: 2,
             }}
             wrapperCol={{
-              span: 22,
+              span: 12,
             }}
 
           >
@@ -128,7 +133,6 @@ export default function NewsAdd() {
               ]}
             >
               <Select
-                // onChange={handleChange}
                 options={categoriesList}
               />
             </Form.Item>
@@ -138,20 +142,16 @@ export default function NewsAdd() {
         <div className={current === 1 ? '' : style.active}>
           <NewEditor getEditorData={(data) => {
             setNewsContent(data)
-          }}></NewEditor>
+          }} editorContent={newsContent}></NewEditor>
         </div>
         <div className={current === 2 ? '' : style.active}></div>
       </div>
       <div style={{ marginTop: 50 }}>
         <Button style={{ marginRight: 20 }} disabled={current > 0 ? false : true} type='primary' onClick={() => setCurrent(current - 1)} >上一步</Button>
         <Button style={{ marginRight: 20 }} type='primary' disabled={current < 2 ? false : true} onClick={() => handleNext()}>下一步</Button>
-        {current === 2 && (
-          <div>
-            <Button style={{ marginRight: 20 }} onClick={() => { hadleSubmit(0) }}>保存草稿箱</Button>
-            <Button onClick={() => { hadleSubmit(1) }}>提交审核</Button>
-          </div>
-        )}
+        {current === 2 && <Button style={{ marginRight: 20 }} onClick={() => { hadleSubmit(0) }}>更新</Button>}
       </div>
     </div >
   )
 }
+

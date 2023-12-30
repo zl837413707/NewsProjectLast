@@ -1,89 +1,108 @@
-import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom';
-import { Badge, Descriptions, Button } from 'antd';
+import React, { useEffect, useState } from 'react'
+import { useParams, useNavigate } from 'react-router-dom';
+import { Descriptions, Button } from 'antd';
+import { ArrowLeftOutlined } from '@ant-design/icons';
+import moment from 'moment';
 import AxiosInstance from '../../../utils/axios';
 
 export default function NewsPreview() {
+  const [newsInfo, setNewsInfo] = useState([])
+  const navigate = useNavigate()
   const { id } = useParams()
   useEffect(() => {
     AxiosInstance.get(`/news/${id}?_expand=category&_expand=role`).then((res) => {
       console.log(res.data);
+      setNewsInfo(res.data)
     })
-  })
+  }, [id])
+
+  const auditList = ['未审核', '审核中', '已通过', '未通过']
+  const pubilishList = ['未发布', '待发布', '已上线', '已下线']
+
+  const getColorByPublishState = (state) => {
+    switch (state) {
+      case 0:
+        return { color: 'red', fontWeight: 'bold' };
+      case 1:
+        return { color: 'orange', fontWeight: 'bold' };
+      case 2:
+        return { color: 'green', fontWeight: 'bold' };
+      case 3:
+        return { color: 'gray', fontWeight: 'bold' };
+      default:
+        return { color: 'black', fontWeight: 'bold' };
+    }
+  }
+
   const items = [
     {
       key: '1',
-      label: 'Product',
-      children: 'Cloud Database',
+      label: '创建者',
+      children: newsInfo.author,
     },
     {
       key: '2',
-      label: 'Billing Mode',
-      children: 'Prepaid',
+      label: '创建时间',
+      children: moment(newsInfo.createTime).format("YYYY-MM-DD HH:mm:ss"),
+
     },
     {
       key: '3',
-      label: 'Automatic Renewal',
-      children: 'YES',
+      label: '发布时间',
+      children: newsInfo.publishTime ? moment(newsInfo.publishTime).format("YYYY-MM-DD HH:mm:ss") : '-',
+
     },
     {
       key: '4',
-      label: 'Order time',
-      children: '2018-04-24 18:00:00',
+      label: '区域',
+      children: newsInfo.region,
     },
     {
       key: '5',
-      label: 'Usage Time',
-      children: '2019-04-24 18:00:00',
-      span: 2,
+      label: '审核状态',
+      children: (
+        <span style={getColorByPublishState(newsInfo.publishState)}>
+          {auditList[newsInfo.auditState]}
+        </span>
+      ),
     },
     {
       key: '6',
-      label: 'Status',
-      children: <Badge status="processing" text="Running" />,
-      span: 3,
+      label: '发布状态',
+      children: (
+        <span style={getColorByPublishState(newsInfo.publishState)}>
+          {pubilishList[newsInfo.publishState]}
+        </span>
+      ),
     },
     {
       key: '7',
-      label: 'Negotiated Amount',
-      children: '$80.00',
+      label: '访问数量',
+      children: newsInfo.view,
     },
     {
       key: '8',
-      label: 'Discount',
-      children: '$20.00',
+      label: '点赞数量',
+      children: newsInfo.star,
     },
     {
       key: '9',
-      label: 'Official Receipts',
-      children: '$60.00',
+      label: '评论数量',
+      children: 0,
     },
     {
       key: '10',
-      label: 'Config Info',
-      children: (
-        <>
-          Data disk type: MongoDB
-          <br />
-          Database version: 3.4
-          <br />
-          Package: dds.mongo.mid
-          <br />
-          Storage space: 10 GB
-          <br />
-          Replication factor: 3
-          <br />
-          Region: East China 1
-          <br />
-        </>
-      ),
+      label: '文章本体',
+      children: (<div dangerouslySetInnerHTML={{ __html: newsInfo.content }} />),
     },
   ]
+
+
   return (
     <div>
-      <Button style={{ marginBottom: 20 }}>back</Button>
-      <Descriptions title="User Info" bordered items={items} />
-    </div>
+      <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate('/news-manage/draft') }} ></Button>
+      <Descriptions title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.title}--{newsInfo.category?.title}</span>} bordered items={items} />
+    </div >
 
   )
 }

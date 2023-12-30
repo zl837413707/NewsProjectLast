@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   EditOutlined, UploadOutlined, DeleteOutlined, ExclamationCircleFilled,
 } from '@ant-design/icons'
-import { Table, Button, Modal } from 'antd'
+import { Table, Button, Modal, message } from 'antd'
 import AxiosInstance from '../../../utils/axios'
 const { confirm } = Modal
 
 export default function NewsDraft() {
   const [dataSource, setDataSource] = useState([])
+  const navigate = useNavigate()
   const userInfo = JSON.parse(localStorage.getItem('token'))
-  console.log(userInfo.username)
 
   useEffect(() => {
     const getData = async () => {
       await AxiosInstance.get(`/news?author=${userInfo.username}&auditState=0&_expand=category`).then((res) => {
-        console.log(res.data);
         setDataSource(res.data)
       })
     }
@@ -57,8 +56,8 @@ export default function NewsDraft() {
       title: '操作',
       render: (item) => {
         return <div>
-          <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<UploadOutlined />} onClick={() => showConfirm(item)} />
-          <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<EditOutlined />} />
+          <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<UploadOutlined />} onClick={() => handleSubmit(item.id)} />
+          <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<EditOutlined />} onClick={() => { navigate(`/news-manage/update/${item.id}`) }} />
           <Button danger shape="circle" icon={<DeleteOutlined />} onClick={() => showConfirm(item)} />
         </div >
       }
@@ -82,7 +81,16 @@ export default function NewsDraft() {
   const okMethod = (item) => {
     AxiosInstance.delete(`/news/${item.id}`).then((res) => {
       const newData = dataSource.filter(data => data.id !== item.id)
-      setDataSource(newData);
+      setDataSource(newData)
+    })
+  }
+  //  提交审核
+  const handleSubmit = (id) => {
+    AxiosInstance.patch(`/news/${id}`, {
+      auditState: 1
+    }).then((res) => {
+      navigate('/audit-manage/list')
+      message.success(`提交成功`)
     })
   }
 
