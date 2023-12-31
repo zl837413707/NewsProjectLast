@@ -54,7 +54,7 @@ export default function SideMenu() {
     getData()
   }, [OpenKeys])
   return (
-    <Sider trigger={null} collapsible className="side" >
+    <Sider trigger={null} collapsible collapsed={false} className="side" >
       <div className="logo" >ニュース管理システム</div>
       <Menu theme="dark" selectedKeys={[`${location.pathname}`]} defaultOpenKeys={[`${OpenKeys}`]} mode="inline" items={menu} onClick={(menu) => { navigate(menu.key) }} />
     </Sider>

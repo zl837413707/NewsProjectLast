@@ -3,16 +3,16 @@ import {
   SendOutlined, SettingOutlined, DeleteOutlined, ExclamationCircleFilled, CheckOutlined, CloseOutlined
 } from '@ant-design/icons';
 import { Table, Tag, Button, Modal, Popover, Switch } from 'antd'
-import axios from 'axios'
+import AxiosInstance from '../../../utils/axios'
 import './index.css'
 const { confirm } = Modal;
 
-export default function RIghtList() {
+export default function RightList() {
   const [dataSource, setDataSource] = useState([])
 
   useEffect(() => {
     const getData = async () => {
-      await axios.get('http://localhost:8100/rights?_embed=children').then((res) => {
+      await AxiosInstance.get('/rights?_embed=children').then((res) => {
         res.data.forEach((res) => {
           if (res.children.length === 0) {
             res.children = ''
@@ -74,12 +74,12 @@ export default function RIghtList() {
   const okMethod = (item) => {
     // 判断是1级还是2级目录
     if (item.grade === 1) {
-      axios.delete(`http://localhost:8100/rights/${item.id}`).then((res) => {
+      AxiosInstance.delete(`/rights/${item.id}`).then((res) => {
         const newData = dataSource.filter(data => data.id !== item.id)
         setDataSource(newData);
       })
     } else {
-      axios.delete(`http://localhost:8100/children/${item.id}`).then((res) => {
+      AxiosInstance.delete(`/children/${item.id}`).then((res) => {
         const newData = dataSource.filter(data => data.id === item.rightId)
         newData[0].children = newData[0].children.filter(data => data.id !== item.id)
         setDataSource([...dataSource]);
@@ -91,11 +91,11 @@ export default function RIghtList() {
     item.pagepermisson = item.pagepermisson === 1 ? 0 : 1;
     setDataSource([...dataSource])
     if (item.grade === 1) {
-      axios.patch(`http://localhost:8100/rights/${item.id}`, {
+      AxiosInstance.patch(`/rights/${item.id}`, {
         pagepermisson: item.pagepermisson
       })
     } else {
-      axios.patch(`http://localhost:8100/children/${item.id}`, {
+      AxiosInstance.patch(`/children/${item.id}`, {
         pagepermisson: item.pagepermisson
       })
     }

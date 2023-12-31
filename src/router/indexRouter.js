@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { HashRouter, Routes, Route, Navigate, useNavigate, useLocation } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Login from '../views/Login/Login';
 import NewsSandBox from '../views/sanbox/NewSandBox';
 
@@ -17,7 +17,7 @@ export default function IndexRouter() {
         return token ? <NewsSandBox /> : null;
     }
     return (
-        <HashRouter>
+        <BrowserRouter>
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route
@@ -25,6 +25,6 @@ export default function IndexRouter() {
                     element={<PrivateRoute />}
                 />
             </Routes>
-        </HashRouter>
+        </BrowserRouter>
     );
 }

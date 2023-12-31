@@ -3,11 +3,11 @@ import {
   EditOutlined, DeleteOutlined, ExclamationCircleFilled, UserAddOutlined
 } from '@ant-design/icons'
 import { Table, Button, Modal, Switch } from 'antd'
-import axios from 'axios'
+import AxiosInstance from '../../../utils/axios'
 import UserForm from '../../../components/user-manage/UserForm1.js'
 const { confirm } = Modal
 
-export default function RIghtList() {
+export default function UserList() {
   const [dataSource, setDataSource] = useState([])
   const [open, setOpen] = useState(false)
   const [update, setUpdate] = useState(false)
@@ -23,7 +23,7 @@ export default function RIghtList() {
 
   useEffect(() => {
     const getData = async () => {
-      await axios.get('http://localhost:8100/users?_expand=role').then((res) => {
+      await AxiosInstance.get('/users?_expand=role').then((res) => {
         // 如果是管理员直接展示所有数据,不是管理员根据id遍历
         setDataSource(roleId === 1 ? res.data : [
           ...res.data.filter(item => item.username === username),
@@ -35,7 +35,7 @@ export default function RIghtList() {
   }, [roleId, region, username])
   useEffect(() => {
     const getData = async () => {
-      await axios.get('http://localhost:8100/regions').then((res) => {
+      await AxiosInstance.get('/regions').then((res) => {
         setRegionList(res.data)
       })
     }
@@ -43,7 +43,7 @@ export default function RIghtList() {
   }, [])
   useEffect(() => {
     const getData = async () => {
-      await axios.get('http://localhost:8100/roles').then((res) => {
+      await AxiosInstance.get('/roles').then((res) => {
         setRoleList(res.data)
       })
     }
@@ -112,7 +112,7 @@ export default function RIghtList() {
   }
   //弹出框确认方法
   const okMethod = (item) => {
-    axios.delete(`http://localhost:8100/users/${item.id}`).then((res) => {
+    AxiosInstance.delete(`/users/${item.id}`).then((res) => {
       getNewData('users')
     })
   }
@@ -121,7 +121,7 @@ export default function RIghtList() {
     addForm.current.validateFields().then(value => {
       addForm.current.resetFields()
       setOpen(false)
-      axios.post('http://localhost:8100/users', {
+      AxiosInstance.post('/users', {
         ...value,
         "roleState": true,
         "default": false,
@@ -134,7 +134,7 @@ export default function RIghtList() {
   }
 
   const handleChange = (item) => {
-    axios.patch(`http://localhost:8100/users/${item.id}`, {
+    AxiosInstance.patch(`/users/${item.id}`, {
       roleState: !item.roleState
     }).then(() => {
       getNewData('users')
@@ -155,7 +155,7 @@ export default function RIghtList() {
   }
   const updateFormData = (item) => {
     updateForm.current.validateFields().then(value => {
-      axios.patch(`http://localhost:8100/users/${currentId}`, {
+      AxiosInstance.patch(`/users/${currentId}`, {
         ...value,
         "roleState": true,
         "default": false,
@@ -171,7 +171,7 @@ export default function RIghtList() {
   }
   // Userデータ更新
   const getNewData = (key) => {
-    axios.get(`http://localhost:8100/${key}?_expand=role`).then((res) => {
+    AxiosInstance.get(`/${key}?_expand=role`).then((res) => {
       setDataSource(roleId === 1 ? res.data : [
         ...res.data.filter(item => item.username === username),
         ...res.data.filter(item => item.region === region && item.roleId === 3)

@@ -7,7 +7,7 @@ const UserForm1 = forwardRef((props, ref) => {
   const [roleList, setRoleList] = useState([])
 
   //这是从localStorage拿的,node的时候再考虑如何获取这些信息
-  const { role: { roleName }, region, roleId } = JSON.parse(localStorage.getItem("token"))
+  const { region, roleId } = JSON.parse(localStorage.getItem("token"))
   useEffect(() => {
     // 判断此时点击的是更新还是编辑,以及点击的人是谁
     if (props.isedit) {
@@ -69,7 +69,7 @@ const UserForm1 = forwardRef((props, ref) => {
       }
     }
     setIsDisabled(props.isDisabledUp)
-  }, [props.getTime])
+  }, [])
 
   const handleChange = (value) => {
     if (value === 1) {

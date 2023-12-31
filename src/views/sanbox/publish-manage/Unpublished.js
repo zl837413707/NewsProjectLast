@@ -1,7 +1,19 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import AxiosInstance from '../../../utils/axios'
+import NewPublish from '../../../components/publish-manage/NewPublish'
 
 export default function Unpublished() {
+  const [dataSource, setDataSource] = useState([])
+  const userInfo = JSON.parse(localStorage.getItem('token'))
+
+  useEffect(() => {
+    AxiosInstance.get(`/news?auhtou=${userInfo.username}&publishState=1&_expand=category`).then((res) => {
+      setDataSource(res.data)
+    })
+  }, [userInfo.username])
   return (
-    <div>Unpublished</div>
+    <div>
+      <NewPublish dataSource={dataSource}></NewPublish>
+    </div>
   )
 }

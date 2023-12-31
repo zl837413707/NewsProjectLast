@@ -13,7 +13,6 @@ export default function NewsAdd() {
   const [newsInfo, setNewsInfo] = useState({})
   const [newsContent, setNewsContent] = useState('')
   const [form] = Form.useForm()
-  const userInfo = JSON.parse(localStorage.getItem('token'))
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -91,7 +90,7 @@ export default function NewsAdd() {
 
   return (
     <div>
-      <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate('/news-manage/draft') }} ></Button>
+      <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate(-1) }} ></Button>
       <Steps style={{ marginTop: 20 }}
         current={current}
         items={items}

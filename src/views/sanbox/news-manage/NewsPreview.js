@@ -11,12 +11,11 @@ export default function NewsPreview() {
   const { id } = useParams()
   useEffect(() => {
     AxiosInstance.get(`/news/${id}?_expand=category&_expand=role`).then((res) => {
-      console.log(res.data);
       setNewsInfo(res.data)
     })
   }, [id])
 
-  const auditList = ['未审核', '审核中', '已通过', '未通过']
+  const auditList = ['草稿箱', '审核中', '已通过', '未通过']
   const pubilishList = ['未发布', '待发布', '已上线', '已下线']
 
   const getColorByPublishState = (state) => {
@@ -61,7 +60,7 @@ export default function NewsPreview() {
       key: '5',
       label: '审核状态',
       children: (
-        <span style={getColorByPublishState(newsInfo.publishState)}>
+        <span style={getColorByPublishState(newsInfo.auditState)}>
           {auditList[newsInfo.auditState]}
         </span>
       ),
@@ -100,7 +99,7 @@ export default function NewsPreview() {
 
   return (
     <div>
-      <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate('/news-manage/draft') }} ></Button>
+      <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate(-1) }} ></Button>
       <Descriptions title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.title}--{newsInfo.category?.title}</span>} bordered items={items} />
     </div >
 
