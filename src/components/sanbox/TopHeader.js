@@ -1,13 +1,29 @@
-import React, { useState} from 'react';
+import React, { useState } from 'react';
 import {
-  MenuFoldOutlined, MenuUnfoldOutlined, SmileOutlined, UserOutlined
+  LeftSquareOutlined, RightSquareOutlined, SmileOutlined, UserOutlined
 } from '@ant-design/icons';
 import { Layout, Button, theme, Dropdown, Space, Avatar } from 'antd';
 import { useNavigate } from 'react-router-dom'
+import { connect } from 'react-redux'
 const { Header } = Layout;
 
-export default function TopHeader() {
-  const [collapsed, setCollapsed] = useState(false);
+// 获取store的某个值 
+const mapStateToProps = ({ Collapsed: { isCollapsed } }) => {
+  return {
+    isCollapsed,
+  }
+}
+// 向store传送某一个行为触发相对应的函数
+const mapDispatchToProps = {
+  changeCollapsedAction() {
+    return {
+      type: 'changeCollapsed',
+    }
+  }
+}
+
+function TopHeader(props) {
+  // const [collapsed, setCollapsed] = useState(false);
   const navigate = useNavigate();
   //这是从localStorage拿的,node的时候再考虑如何获取这些信息
   const { role: { roleName }, username } = JSON.parse(localStorage.getItem("token"))
@@ -23,7 +39,7 @@ export default function TopHeader() {
       icon: <SmileOutlined />,
     }
   ];
-  
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -36,6 +52,10 @@ export default function TopHeader() {
     }
   };
 
+  const collapsedChange = () => {
+    props.changeCollapsedAction()
+  }
+
   return (
     <Header
       style={{
@@ -45,8 +65,8 @@ export default function TopHeader() {
     >
       <Button
         type="text"
-        icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
-        onClick={() => setCollapsed(!collapsed)}
+        icon={props.isCollapsed ? <RightSquareOutlined /> : <LeftSquareOutlined />}
+        onClick={() => collapsedChange()}
         style={{
           fontSize: '16px',
           width: 64,
@@ -68,3 +88,6 @@ export default function TopHeader() {
     </Header>
   )
 }
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(TopHeader)

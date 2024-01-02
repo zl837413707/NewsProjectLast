@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Spin } from 'antd';
+import { useSelector } from 'react-redux';
 import axios from 'axios'
 import Home from '../../views/sanbox/home/Home'
 import UserList from '../../views/sanbox/user-manage/UserList'
@@ -22,14 +23,14 @@ export default function NewsRouter() {
   //这是从localStorage拿的,node的时候再考虑如何获取这些信息
   const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
   const [routeList, setRouteList] = useState([])
-  const [loading, setLoading] = useState(true);
+  const loadingState = useSelector(state => state.LoadingReducer.isLoading);
   useEffect(() => {
     Promise.all([
       axios.get(`http://localhost:8100/rights`),
       axios.get(`http://localhost:8100/children`)
     ]).then((res) => {
       setRouteList([...res[0].data, ...res[1].data])
-      setLoading(false);
+      // setLoading(false);
     })
   }, [])
   const RouterList = {
@@ -52,22 +53,25 @@ export default function NewsRouter() {
     return rights.includes(item.key) && (item.pagepermisson === 1 || item.routepermisson === 1)
   }
 
-  if (loading) {
-    return <Spin fullscreen />
-  }
+  // if (loading) {
+  //   return <Spin fullscreen />
+  // }
 
   return (
-    <Routes>
-      {
-        routeList.map(item => {
-          if (isPerssion(item)) {
-            return <Route key={item.key} path={item.key} element={RouterList[item.key]} exact />
-          }
-          return null
-        })
-      }
-      <Route path='/' element={<Navigate to="/home" replace />} />
-      <Route path='*' element={<Nopermission />} />
-    </Routes>
+    <Spin spinning={loadingState} size='large'>
+      <Routes>
+        {
+          routeList.map(item => {
+            if (isPerssion(item)) {
+              return <Route key={item.key} path={item.key} element={RouterList[item.key]} exact />
+            }
+            return null
+          })
+        }
+        <Route path='/' element={<Navigate to="/home" replace />} />
+        <Route path='*' element={<Nopermission />} />
+      </Routes>
+    </Spin>
+
   )
 }

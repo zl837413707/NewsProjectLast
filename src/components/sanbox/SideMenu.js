@@ -4,6 +4,7 @@ import {
   PieChartOutlined, TeamOutlined, UserOutlined,
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
+import { connect } from 'react-redux'
 import './index.css'
 import AxiosInstance from '../../utils/axios';
 const { Sider } = Layout;
@@ -14,11 +15,18 @@ const iconList = {
   '/right-manage': <TeamOutlined />,
 }
 
-export default function SideMenu() {
+const mapStateToProps = ({ Collapsed: { isCollapsed } }) => {
+  return {
+    isCollapsed,
+  }
+}
+
+function SideMenu(props) {
   const navigate = useNavigate();
   const location = useLocation();
   const OpenKeys = '/' + location.pathname.split('/')[1]
   const [menu, setMenu] = useState([])
+
   useEffect(() => {
     //这是从localStorage拿的,node的时候再考虑如何获取这些信息
     const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
@@ -54,9 +62,11 @@ export default function SideMenu() {
     getData()
   }, [OpenKeys])
   return (
-    <Sider trigger={null} collapsible collapsed={false} className="side" >
-      <div className="logo" >ニュース管理システム</div>
-      <Menu theme="dark" selectedKeys={[`${location.pathname}`]} defaultOpenKeys={[`${OpenKeys}`]} mode="inline" items={menu} onClick={(menu) => { navigate(menu.key) }} />
+    <Sider trigger={null} collapsible collapsed={props.isCollapsed} className="side" >
+      <div className="logo" >{!props.isCollapsed ? 'ニュース管理システム' : '管理'}</div>
+      <Menu theme="dark" selectedKeys={[`${location.pathname}`]} defaultOpenKeys={props.isCollapsed ? [] : [`${OpenKeys}`]} mode="inline" items={menu} onClick={(menu) => { navigate(menu.key) }} />
     </Sider>
   )
 }
+
+export default connect(mapStateToProps)(SideMenu)

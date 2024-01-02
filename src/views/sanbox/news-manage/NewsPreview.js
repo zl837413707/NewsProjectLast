@@ -100,7 +100,7 @@ export default function NewsPreview() {
   return (
     <div>
       <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate(-1) }} ></Button>
-      <Descriptions title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.title}--{newsInfo.category?.title}</span>} bordered items={items} />
+      <Descriptions title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.title}--{newsInfo.category?.title}</span>} bordered items={items} contentStyle={{ width: '100px' }} labelStyle={{ width: '100px' }} />
     </div >
 
   )
