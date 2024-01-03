@@ -404,32 +404,38 @@
     {
       "id": 1,
       "title": "时事新闻",
-      "value": "时事新闻"
+      "value": "时事新闻",
+      "path":"/news/shishi"
     },
     {
       "id": 2,
       "title": "环球经济",
-      "value": "环球经济"
+      "value": "环球经济",
+      "path":"/news/huanqiu"
     },
     {
       "id": 3,
       "title": "科学技术",
-      "value": "科学技术"
+      "value": "科学技术",
+      "path":"/news/kexue"
     },
     {
       "id": 4,
       "title": "军事世界",
-      "value": "军事世界"
+      "value": "军事世界",
+      "path":"/news/junshi"
     },
     {
       "id": 5,
       "title": "世界体育",
-      "value": "世界体育"
+      "value": "世界体育",
+      "path":"/news/tiyu"
     },
     {
       "id": 6,
       "title": "生活理财",
-      "value": "生活理财"
+      "value": "生活理财",
+      "path":"/news/shenghuo"
     }
   ],
   "news": [
@@ -561,11 +567,12 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 1,
+      "publishState": 2,
       "createTime": 1703786534952,
       "star": 0,
       "view": 0,
-      "id": 9
+      "id": 9,
+      "publishTime": 1704222046333
     },
     {
       "title": "bbb",
@@ -617,11 +624,12 @@
       "author": "铁锤",
       "roleId": 2,
       "auditState": 2,
-      "publishState": 1,
+      "publishState": 2,
       "createTime": 1703961730981,
       "star": 0,
       "view": 0,
-      "id": 13
+      "id": 13,
+      "publishTime": 1704222046817
     },
     {
       "title": "simahaiwei",
@@ -644,12 +652,43 @@
       "region": "南极洲",
       "author": "西门吹灯",
       "roleId": 3,
-      "auditState": 1,
-      "publishState": 0,
+      "auditState": 2,
+      "publishState": 2,
       "createTime": 1703962044868,
       "star": 0,
       "view": 0,
-      "id": 15
+      "id": 15,
+      "publishTime": 1704222047261
+    },
+    {
+      "title": "test",
+      "categoryId": 4,
+      "content": "<p>aaaaaaaaa</p>\n",
+      "region": "亚洲",
+      "author": "铁锤",
+      "roleId": 2,
+      "auditState": 2,
+      "publishState": 2,
+      "createTime": 1704222020383,
+      "star": 0,
+      "view": 0,
+      "id": 16,
+      "publishTime": 1704222048082
+    },
+    {
+      "title": "test1",
+      "categoryId": 4,
+      "content": "<p>123</p>\n",
+      "region": "全球",
+      "author": "admin",
+      "roleId": 1,
+      "auditState": 2,
+      "publishState": 2,
+      "createTime": 1704224821146,
+      "star": 0,
+      "view": 0,
+      "id": 17,
+      "publishTime": 1704224832255
     }
   ]
 }

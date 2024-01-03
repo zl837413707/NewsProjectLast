@@ -23,7 +23,7 @@ export default function NewsRouter() {
   //这是从localStorage拿的,node的时候再考虑如何获取这些信息
   const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
   const [routeList, setRouteList] = useState([])
-  const loadingState = useSelector(state => state.LoadingReducer.isLoading);
+  const loadingState = useSelector(state => state.LoadingReducer.isLoading)
   useEffect(() => {
     Promise.all([
       axios.get(`http://localhost:8100/rights`),
