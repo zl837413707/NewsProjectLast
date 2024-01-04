@@ -8,7 +8,7 @@ const { Search } = Input;
 
 export default function NewsHeader() {
   const selectBefore = (
-    <Select defaultValue="分野" style={{ width: 100, fontSize: '13px' }}>
+    <Select defaultValue="全て" style={{ width: 100, fontSize: '13px' }}>
       <Option value="http://">http://</Option>
       <Option value="https://">https://</Option>
     </Select>

@@ -1,23 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Spin } from 'antd';
 import { useSelector } from 'react-redux';
 import axios from 'axios'
-import Home from '../../views/sanbox/home/Home'
-import UserList from '../../views/sanbox/user-manage/UserList'
-import RoleList from '../../views/sanbox/right-manage/RoleList';
-import RightList from '../../views/sanbox/right-manage/RightList';
-import Nopermission from '../../components/sanbox/Nopermission';
-import NewsAdd from '../../views/sanbox/news-manage/NewsAdd';
-import NewsDraft from '../../views/sanbox/news-manage/NewsDraft';
-import NewsCategory from '../../views/sanbox/news-manage/NewsCategory';
-import NewsPreview from '../../views/sanbox/news-manage/NewsPreview';
-import NewsUpdate from '../../views/sanbox/news-manage/NewsUpdate';
-import Audit from '../../views/sanbox/audit-manage/Audit';
-import AuditList from '../../views/sanbox/audit-manage/AuditList';
-import Unpublished from '../../views/sanbox/publish-manage/Unpublished';
-import Published from '../../views/sanbox/publish-manage/Published';
-import Sunset from '../../views/sanbox/publish-manage/Sunset';
+const Home = lazy(() => import('../../views/sanbox/home/Home'));
+const UserList = lazy(() => import('../../views/sanbox/user-manage/UserList'));
+const RoleList = lazy(() => import('../../views/sanbox/right-manage/RoleList'));
+const RightList = lazy(() => import('../../views/sanbox/right-manage/RightList'));
+const Nopermission = lazy(() => import('../../components/sanbox/Nopermission'));
+const NewsAdd = lazy(() => import('../../views/sanbox/news-manage/NewsAdd'));
+const NewsDraft = lazy(() => import('../../views/sanbox/news-manage/NewsDraft'));
+const NewsCategory = lazy(() => import('../../views/sanbox/news-manage/NewsCategory'));
+const NewsPreview = lazy(() => import('../../views/sanbox/news-manage/NewsPreview'));
+const NewsUpdate = lazy(() => import('../../views/sanbox/news-manage/NewsUpdate'));
+const Audit = lazy(() => import('../../views/sanbox/audit-manage/Audit'));
+const AuditList = lazy(() => import('../../views/sanbox/audit-manage/AuditList'));
+const Unpublished = lazy(() => import('../../views/sanbox/publish-manage/Unpublished'));
+const Published = lazy(() => import('../../views/sanbox/publish-manage/Published'));
+const Sunset = lazy(() => import('../../views/sanbox/publish-manage/Sunset'));
 
 export default function NewsRouter() {
   //这是从localStorage拿的,node的时候再考虑如何获取这些信息
@@ -53,24 +53,22 @@ export default function NewsRouter() {
     return rights.includes(item.key) && (item.pagepermisson === 1 || item.routepermisson === 1)
   }
 
-  // if (loading) {
-  //   return <Spin fullscreen />
-  // }
-
   return (
     <Spin spinning={loadingState} size='large'>
-      <Routes>
-        {
-          routeList.map(item => {
-            if (isPerssion(item)) {
-              return <Route key={item.key} path={item.key} element={RouterList[item.key]} exact />
-            }
-            return null
-          })
-        }
-        <Route path='/' element={<Navigate to="/home" replace />} />
-        <Route path='*' element={<Nopermission />} />
-      </Routes>
+      <Suspense>
+        <Routes>
+          {
+            routeList.map(item => {
+              if (isPerssion(item)) {
+                return <Route key={item.key} path={item.key} element={RouterList[item.key]} exact />
+              }
+              return null
+            })
+          }
+          <Route path='/' element={<Navigate to="/home" replace />} />
+          <Route path='*' element={<Nopermission />} />
+        </Routes>
+      </Suspense>
     </Spin>
 
   )

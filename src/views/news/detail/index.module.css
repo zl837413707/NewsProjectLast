@@ -1,7 +1,7 @@
 .layoutStyle{
   height: 100vh;
   background-color: #fff;
-
+  overflow: auto;
 }
 
 .headerStyle{
@@ -16,9 +16,4 @@
   margin: 0 auto;
   width: 1200px;
 
-}
-
-.footerStyle{
-  height: 40px;
-  background-color: #eaedf1;
 }

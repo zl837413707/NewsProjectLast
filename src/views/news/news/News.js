@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 import style from './index.module.css'
 import NewsHeader from '../../../components/news/header/NewsHeader'
 import NewsContent from '../../../components/news/content/NewsContent'
+import NewsFooter from '../../../components/news/footer/NewsFooter'
 const { Header, Footer, Content } = Layout;
 
 
@@ -17,7 +18,7 @@ export default function News() {
         <Layout className={style.layoutStyle}>
           <Header className={style.headerStyle}><NewsHeader /></Header>
           <Content className={style.contentStyle}><NewsContent /></Content>
-          <Footer className={style.footerStyle}>Footer</Footer>
+          <Footer className={style.footerStyle}><NewsFooter /></Footer>
         </Layout>
       </Flex>
     </Spin>

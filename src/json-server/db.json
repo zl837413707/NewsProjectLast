@@ -403,39 +403,33 @@
   "categories": [
     {
       "id": 1,
-      "title": "时事新闻",
-      "value": "时事新闻",
-      "path":"/news/shishi"
+      "title": "IT",
+      "value": "IT"
     },
     {
       "id": 2,
-      "title": "环球经济",
-      "value": "环球经济",
-      "path":"/news/huanqiu"
+      "title": "社会",
+      "value": "社会"
     },
     {
       "id": 3,
-      "title": "科学技术",
-      "value": "科学技术",
-      "path":"/news/kexue"
+      "title": "経済",
+      "value": "経済"
     },
     {
       "id": 4,
-      "title": "军事世界",
-      "value": "军事世界",
-      "path":"/news/junshi"
+      "title": "政治",
+      "value": "政治"
     },
     {
       "id": 5,
-      "title": "世界体育",
-      "value": "世界体育",
-      "path":"/news/tiyu"
+      "title": "スポーツ",
+      "value": "スポーツ"
     },
     {
       "id": 6,
-      "title": "生活理财",
-      "value": "生活理财",
-      "path":"/news/shenghuo"
+      "title": "国際",
+      "value": "国際"
     }
   ],
   "news": [
@@ -450,7 +444,7 @@
       "publishState": 2,
       "createTime": 1615777743864,
       "star": 1030,
-      "view": 2031,
+      "view": 2163,
       "id": 1,
       "publishTime": 1615778496314
     },
@@ -465,7 +459,7 @@
       "publishState": 2,
       "createTime": 1615778694831,
       "star": 511,
-      "view": 833,
+      "view": 842,
       "id": 2,
       "publishTime": 1615778911028
     },
@@ -480,7 +474,7 @@
       "publishState": 2,
       "createTime": 1615778715619,
       "star": 600,
-      "view": 984,
+      "view": 986,
       "id": 3,
       "publishTime": 1615778911762
     },
@@ -510,7 +504,7 @@
       "publishState": 2,
       "createTime": 1615778777924,
       "star": 100,
-      "view": 201,
+      "view": 203,
       "id": 5,
       "publishTime": 1615778914498
     },
@@ -570,7 +564,7 @@
       "publishState": 2,
       "createTime": 1703786534952,
       "star": 0,
-      "view": 0,
+      "view": 3,
       "id": 9,
       "publishTime": 1704222046333
     },
