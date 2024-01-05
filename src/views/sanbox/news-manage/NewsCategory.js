@@ -30,13 +30,13 @@ export default function RIghtList() {
       }
     },
     {
-      title: '分类名',
+      title: '分類名',
       dataIndex: 'title',
       onCell: (record) => ({
         record,
         editable: true,
         dataIndex: 'title',
-        title: '分类名',
+        title: '分類名',
         handleSave,
       }),
     }

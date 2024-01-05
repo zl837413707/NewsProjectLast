@@ -14,7 +14,7 @@
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "亚洲",
+      "region": "アジア",
       "roleId": 2,
       "id": 2
     },
@@ -23,7 +23,7 @@
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "南极洲",
+      "region": "南極大陸",
       "roleId": 2,
       "id": 3
     },
@@ -32,7 +32,7 @@
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "亚洲",
+      "region": "アジア",
       "roleId": 2,
       "id": 4
     },
@@ -41,7 +41,7 @@
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "南极洲",
+      "region": "南極大陸",
       "roleId": 3,
       "id": 5
     },
@@ -50,7 +50,7 @@
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "南极洲",
+      "region": "南極大陸",
       "roleId": 3,
       "id": 6
     },
@@ -59,7 +59,7 @@
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "亚洲",
+      "region": "アジア",
       "roleId": 3,
       "id": 7
     },
@@ -68,7 +68,7 @@
       "password": "123",
       "roleState": true,
       "default": false,
-      "region": "亚洲",
+      "region": "アジア",
       "roleId": 3,
       "id": 8
     }
@@ -76,28 +76,28 @@
   "children": [
     {
       "id": 3,
-      "label": "添加用户",
+      "label": "ユーザーの追加",
       "rightId": 2,
       "key": "/user-manage/add",
       "grade": 2
     },
     {
       "id": 4,
-      "label": "删除用户",
+      "label": "ユーザーの削除",
       "rightId": 2,
       "key": "/user-manage/delete",
       "grade": 2
     },
     {
       "id": 5,
-      "label": "修改用户",
+      "label": "ユーザーの変更",
       "rightId": 2,
       "key": "/user-manage/update",
       "grade": 2
     },
     {
       "id": 6,
-      "label": "用户列表",
+      "label": "ユーザーリスト",
       "rightId": 2,
       "key": "/user-manage/list",
       "pagepermisson": 1,
@@ -105,7 +105,7 @@
     },
     {
       "id": 8,
-      "label": "角色列表",
+      "label": "ロールリスト",
       "rightId": 7,
       "key": "/right-manage/role/list",
       "pagepermisson": 1,
@@ -113,7 +113,7 @@
     },
     {
       "id": 9,
-      "label": "权限列表",
+      "label": "権限リスト",
       "rightId": 7,
       "key": "/right-manage/right/list",
       "pagepermisson": 1,
@@ -121,42 +121,42 @@
     },
     {
       "id": 10,
-      "label": "修改角色",
+      "label": "ロールの変更",
       "rightId": 7,
       "key": "/right-manage/role/update",
       "grade": 2
     },
     {
       "id": 11,
-      "label": "删除角色",
+      "label": "ロールの削除",
       "rightId": 7,
       "key": "/right-manage/role/delete",
       "grade": 2
     },
     {
       "id": 12,
-      "label": "修改权限",
+      "label": "権限の変更",
       "rightId": 7,
       "key": "/right-manage/right/update",
       "grade": 2
     },
     {
       "id": 13,
-      "label": "删除权限",
+      "label": "権限の削除",
       "rightId": 7,
       "key": "/right-manage/right/delete",
       "grade": 2
     },
     {
       "id": 15,
-      "label": "新闻列表",
+      "label": "ニュースリスト",
       "rightId": 14,
       "key": "/news-manage/list",
       "grade": 2
     },
     {
       "id": 16,
-      "label": "撰写新闻",
+      "label": "ニュースの作成",
       "rightId": 14,
       "key": "/news-manage/add",
       "grade": 2,
@@ -164,7 +164,7 @@
     },
     {
       "id": 17,
-      "label": "新闻更新",
+      "label": "ニュースの更新",
       "rightId": 14,
       "key": "/news-manage/update/:id",
       "grade": 2,
@@ -172,7 +172,7 @@
     },
     {
       "id": 18,
-      "label": "新闻预览",
+      "label": "ニュースのプレビュー",
       "rightId": 14,
       "key": "/news-manage/preview/:id",
       "grade": 2,
@@ -180,7 +180,7 @@
     },
     {
       "id": 19,
-      "label": "草稿箱",
+      "label": "下書きボックス",
       "rightId": 14,
       "key": "/news-manage/draft",
       "pagepermisson": 1,
@@ -188,7 +188,7 @@
     },
     {
       "id": 20,
-      "label": "新闻分类",
+      "label": "ニュースカテゴリ",
       "rightId": 14,
       "key": "/news-manage/category",
       "pagepermisson": 1,
@@ -196,7 +196,7 @@
     },
     {
       "id": 22,
-      "label": "审核新闻",
+      "label": "ニュースの審査",
       "rightId": 21,
       "key": "/audit-manage/audit",
       "pagepermisson": 1,
@@ -204,7 +204,7 @@
     },
     {
       "id": 23,
-      "label": "审核列表",
+      "label": "審査リスト",
       "rightId": 21,
       "key": "/audit-manage/list",
       "pagepermisson": 1,
@@ -212,7 +212,7 @@
     },
     {
       "id": 25,
-      "label": "待发布",
+      "label": "公開待ち",
       "rightId": 24,
       "key": "/publish-manage/unpublished",
       "pagepermisson": 1,
@@ -220,7 +220,7 @@
     },
     {
       "id": 26,
-      "label": "已发布",
+      "label": "公開済み",
       "rightId": 24,
       "key": "/publish-manage/published",
       "pagepermisson": 1,
@@ -228,7 +228,7 @@
     },
     {
       "id": 27,
-      "label": "已下线",
+      "label": "オフライン",
       "rightId": 24,
       "key": "/publish-manage/sunset",
       "pagepermisson": 1,
@@ -238,7 +238,7 @@
   "rights": [
     {
       "id": 1,
-      "label": "首页",
+      "label": "ホームページ",
       "key": "/home",
       "icon": "/home",
       "pagepermisson": 1,
@@ -246,35 +246,35 @@
     },
     {
       "id": 2,
-      "label": "用户管理",
+      "label": "ユーザー管理",
       "key": "/user-manage",
       "pagepermisson": 1,
       "grade": 1
     },
     {
       "id": 7,
-      "label": "权限管理",
+      "label": "権限管理",
       "key": "/right-manage",
       "pagepermisson": 1,
       "grade": 1
     },
     {
       "id": 14,
-      "label": "新闻管理",
+      "label": "ニュース管理",
       "key": "/news-manage",
       "pagepermisson": 1,
       "grade": 1
     },
     {
       "id": 21,
-      "label": "审核管理",
+      "label": "審査管理",
       "key": "/audit-manage",
       "pagepermisson": 1,
       "grade": 1
     },
     {
       "id": 24,
-      "label": "发布管理",
+      "label": "公開管理",
       "key": "/publish-manage",
       "pagepermisson": 1,
       "grade": 1
@@ -283,7 +283,7 @@
   "roles": [
     {
       "id": 1,
-      "roleName": "超级管理员",
+      "roleName": "スーパー管理者",
       "roleType": 1,
       "rights": [
         "/user-manage/add",
@@ -317,7 +317,7 @@
     },
     {
       "id": 2,
-      "roleName": "区域管理员",
+      "roleName": "エリア管理者",
       "roleType": 2,
       "rights": [
         "/news-manage",
@@ -344,7 +344,7 @@
     },
     {
       "id": 3,
-      "roleName": "区域编辑",
+      "roleName": "エリア編集者",
       "roleType": 3,
       "rights": [
         "/home",
@@ -366,38 +366,38 @@
   "regions": [
     {
       "id": 1,
-      "title": "亚洲",
-      "value": "亚洲"
+      "title": "アジア",
+      "value": "アジア"
     },
     {
       "id": 2,
-      "title": "欧洲",
-      "value": "欧洲"
+      "title": "ヨーロッパ",
+      "value": "ヨーロッパ"
     },
     {
       "id": 3,
-      "title": "北美洲",
-      "value": "北美洲"
+      "title": "北アメリカ",
+      "value": "北アメリカ"
     },
     {
       "id": 4,
-      "title": "南美洲",
-      "value": "南美洲"
+      "title": "南アメリカ",
+      "value": "南アメリカ"
     },
     {
       "id": 5,
-      "title": "非洲",
-      "value": "非洲"
+      "title": "アフリカ",
+      "value": "アフリカ"
     },
     {
       "id": 6,
-      "title": "大洋洲",
-      "value": "大洋洲"
+      "title": "オセアニア",
+      "value": "オセアニア"
     },
     {
       "id": 7,
-      "title": "南极洲",
-      "value": "南极洲"
+      "title": "南極大陸",
+      "value": "南極大陸"
     }
   ],
   "categories": [
@@ -444,7 +444,7 @@
       "publishState": 2,
       "createTime": 1615777743864,
       "star": 1030,
-      "view": 2163,
+      "view": 2166,
       "id": 1,
       "publishTime": 1615778496314
     },
@@ -614,7 +614,7 @@
       "title": "tiechui",
       "categoryId": 4,
       "content": "<p>11111</p>\n",
-      "region": "亚洲",
+      "region": "アジア",
       "author": "铁锤",
       "roleId": 2,
       "auditState": 2,
@@ -629,7 +629,7 @@
       "title": "simahaiwei",
       "categoryId": 3,
       "content": "<p>1111111</p>\n",
-      "region": "亚洲",
+      "region": "アジア",
       "author": "司马海味",
       "roleId": 3,
       "auditState": 3,
@@ -643,7 +643,7 @@
       "title": "西门吹灯",
       "categoryId": 4,
       "content": "<p>11111111111</p>\n",
-      "region": "南极洲",
+      "region": "南極大陸",
       "author": "西门吹灯",
       "roleId": 3,
       "auditState": 2,
@@ -658,7 +658,7 @@
       "title": "test",
       "categoryId": 4,
       "content": "<p>aaaaaaaaa</p>\n",
-      "region": "亚洲",
+      "region": "アジア",
       "author": "铁锤",
       "roleId": 2,
       "auditState": 2,

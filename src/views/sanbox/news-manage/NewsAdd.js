@@ -25,16 +25,13 @@ export default function NewsAdd() {
 
   const items = [
     {
-      title: '基本信息',
-      description: '新闻标题,新闻分类',
+      title: '基本情報'
     },
     {
-      title: '新闻内容',
-      description: '新闻主体内容',
+      title: 'ニュース内容'
     },
     {
-      title: '新闻提交',
-      description: '保存草稿或提交审核',
+      title: 'ニュース提出'
     },
   ]
   //  点击下一步
@@ -48,12 +45,10 @@ export default function NewsAdd() {
         console.log(err);
       })
     } else {
-      console.log(newsContent);
       if (isEmptyContent(newsContent)) {
-        message.error('新闻内容不能为空')
+        message.error('ニュース内容を入力してください！')
       } else {
         setCurrent(current + 1)
-        console.log(newsInfo, newsContent);
       }
 
     }
@@ -71,22 +66,20 @@ export default function NewsAdd() {
       "createTime": Date.now(),
       "star": 0,
       "view": 0,
-      // "publishTime": 0
     }).then(() => {
       navigate(state === 0 ? '/news-manage/draft' : '/audit-manage/list')
-      message.success(`请在${state === 0 ? '草稿箱' : '审核列表'}中查询你的新闻`)
+      message.success('提出成功')
     })
   }
 
   const isEmptyContent = (content) => {
-    const trimmedContent = content.trim(); // 去除两端空格
-    // 使用正则表达式匹配多个 <p> 标签或者纯空白字符
-    const regex = /^(\s*<p>\s*<\/p>\s*)*$/gi;
-    return trimmedContent === '' || regex.test(trimmedContent);
+    const trimmedContent = content.trim()
+    const regex = /^(\s*<p>\s*<\/p>\s*)*$/gi
+    return trimmedContent === '' || regex.test(trimmedContent)
   };
 
   return (
-    <div>
+    <div style={{ width: 1200, margin: '0 auto' }}>
       <Steps style={{ marginTop: 20 }}
         current={current}
         items={items}
@@ -105,12 +98,12 @@ export default function NewsAdd() {
 
           >
             <Form.Item
-              label="新闻标题"
+              label="ニュースタイトル"
               name="title"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your username!',
+                  message: 'ニュースタイトルを入力してください！',
                 },
               ]}
             >
@@ -118,12 +111,12 @@ export default function NewsAdd() {
             </Form.Item>
 
             <Form.Item
-              label="新闻分类"
+              label="ニュース分類"
               name="categoryId"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your password!',
+                  message: 'ニュース分類を選んでください！',
                 },
               ]}
             >
@@ -143,13 +136,13 @@ export default function NewsAdd() {
         <div className={current === 2 ? '' : style.active}></div>
       </div>
       <div style={{ marginTop: 50 }}>
-        <Button style={{ marginRight: 20 }} disabled={current > 0 ? false : true} type='primary' onClick={() => setCurrent(current - 1)} >上一步</Button>
-        <Button style={{ marginRight: 20 }} type='primary' disabled={current < 2 ? false : true} onClick={() => handleNext()}>下一步</Button>
+        <Button style={{ marginRight: 20 }} disabled={current > 0 ? false : true} type='primary' onClick={() => setCurrent(current - 1)} >戻る</Button>
+        <Button style={{ marginRight: 20 }} type='primary' disabled={current < 2 ? false : true} onClick={() => handleNext()}>次へ</Button>
         {current === 2 && (
-          <div>
-            <Button style={{ marginRight: 20 }} onClick={() => { hadleSubmit(0) }}>保存草稿箱</Button>
-            <Button onClick={() => { hadleSubmit(1) }}>提交审核</Button>
-          </div>
+          <span>
+            <Button style={{ marginRight: 20 }} onClick={() => { hadleSubmit(0) }}>下書きを保存する</Button>
+            <Button onClick={() => { hadleSubmit(1) }}>審査を提出する</Button>
+          </span>
         )}
       </div>
     </div >

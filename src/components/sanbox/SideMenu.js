@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'
 import {
-  PieChartOutlined, TeamOutlined, UserOutlined,
+  PieChartOutlined, TeamOutlined, UserOutlined, SolutionOutlined, UnlockOutlined, ExportOutlined
 } from '@ant-design/icons';
 import { Layout, Menu } from 'antd';
 import { connect } from 'react-redux'
@@ -13,6 +13,9 @@ const iconList = {
   '/home': <PieChartOutlined />,
   '/user-manage': <UserOutlined />,
   '/right-manage': <TeamOutlined />,
+  '/news-manage': <SolutionOutlined />,
+  '/audit-manage': <UnlockOutlined />,
+  '/publish-manage': <ExportOutlined />,
 }
 
 const mapStateToProps = ({ Collapsed: { isCollapsed } }) => {

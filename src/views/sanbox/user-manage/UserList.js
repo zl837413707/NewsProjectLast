@@ -53,7 +53,7 @@ export default function UserList() {
   //表格数据
   const columns = [
     {
-      title: '地域',
+      title: 'エリア',
       dataIndex: 'region',
       filters: [...regionList.map(item => ({
         text: item.title,
@@ -69,18 +69,18 @@ export default function UserList() {
       }
     },
     {
-      title: '角色名',
+      title: 'ロール名',
       dataIndex: 'role',
       render: (role) => {
         return role?.roleName
       }
     },
     {
-      title: '用户名',
+      title: 'ユーザー名',
       dataIndex: 'username'
     },
     {
-      title: '用户状态',
+      title: 'ステータス',
       dataIndex: 'roleState',
       render: (roleState, item) => {
         return <Switch checked={roleState} disabled={item.roleId === roleId ? true : item.default} onChange={() => handleChange(item)}></Switch>

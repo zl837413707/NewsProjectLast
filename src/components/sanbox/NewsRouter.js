@@ -23,6 +23,7 @@ export default function NewsRouter() {
   //这是从localStorage拿的,node的时候再考虑如何获取这些信息
   const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
   const [routeList, setRouteList] = useState([])
+  const [dataLoaded, setDataLoaded] = useState(false)
   const loadingState = useSelector(state => state.LoadingReducer.isLoading)
   useEffect(() => {
     Promise.all([
@@ -30,7 +31,7 @@ export default function NewsRouter() {
       axios.get(`http://localhost:8100/children`)
     ]).then((res) => {
       setRouteList([...res[0].data, ...res[1].data])
-      // setLoading(false);
+      setDataLoaded(true)
     })
   }, [])
   const RouterList = {
@@ -66,10 +67,9 @@ export default function NewsRouter() {
             })
           }
           <Route path='/' element={<Navigate to="/home" replace />} />
-          <Route path='*' element={<Nopermission />} />
+          {dataLoaded && <Route path='*' element={<Nopermission />} />}
         </Routes>
       </Suspense>
     </Spin>
-
   )
 }

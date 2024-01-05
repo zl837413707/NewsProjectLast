@@ -31,7 +31,7 @@ export default function NewsDraft() {
       }
     },
     {
-      title: '新闻标题',
+      title: 'ニュースタイトル',
       dataIndex: 'title',
       render: (title, item) => {
         return (
@@ -42,11 +42,11 @@ export default function NewsDraft() {
       }
     },
     {
-      title: '作者',
+      title: '作成者',
       dataIndex: 'author'
     },
     {
-      title: '分类',
+      title: '分類',
       dataIndex: 'category',
       render: (category) => {
         return category.title
@@ -90,7 +90,7 @@ export default function NewsDraft() {
       auditState: 1
     }).then((res) => {
       navigate('/audit-manage/list')
-      message.success(`提交成功`)
+      message.success(`提出成功`)
     })
   }
 
