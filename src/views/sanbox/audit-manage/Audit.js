@@ -22,7 +22,7 @@ export default function Audit() {
 
   const columns = [
     {
-      title: '新闻标题',
+      title: 'ニュースタイトル',
       dataIndex: 'title',
       render: (title, item) => {
         return (
@@ -33,11 +33,11 @@ export default function Audit() {
       }
     },
     {
-      title: '作者',
+      title: '作成者',
       dataIndex: 'author',
     },
     {
-      title: '新闻分类',
+      title: 'ニュース分類',
       dataIndex: 'category',
       render: (category) => {
         return <div>{category.title}</div>

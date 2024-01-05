@@ -29,7 +29,7 @@ export default function NewsPreview() {
     },
     {
       key: '2',
-      label: '公開日時',
+      label: '公開時間',
       children: newsInfo.publishTime ? moment(newsInfo.publishTime).format("YYYY-MM-DD HH:mm:ss") : '-',
       span: 2
     },
@@ -41,12 +41,12 @@ export default function NewsPreview() {
     {
       key: '4',
       label: 'アクセス数',
-      children: newsInfo && newsInfo.view !== undefined ? <Statistic value={(newsInfo.view + 1)} /> : null,
+      children: newsInfo && newsInfo.view !== undefined ? <Statistic value={(newsInfo.view + 1)} /> : null
     },
     {
       key: '5',
       label: 'いいね数',
-      children: newsInfo && newsInfo.star !== undefined ? <Statistic value={newsInfo.star} /> : null,
+      children: newsInfo && newsInfo.star !== undefined ? <Statistic value={newsInfo.star} /> : null
 
     },
     {

@@ -1,25 +1,18 @@
-import React from 'react'
+import React, { } from 'react'
 import style from './index.module.css'
 import './index.css'
-import { Input, Select } from 'antd';
-const { Option } = Select;
+import { Input} from 'antd';
 const { Search } = Input;
 
 
 export default function NewsHeader() {
-  const selectBefore = (
-    <Select defaultValue="全て" style={{ width: 100, fontSize: '13px' }}>
-      <Option value="http://">http://</Option>
-      <Option value="https://">https://</Option>
-    </Select>
-  );
   const onSearch = (value) => {
 
   }
   return (
     <div className={style.headerContent}>
       <span style={{ fontWeight: 700, marginRight: 50 }}>ニュース</span>
-      <Search addonBefore={selectBefore} style={{ width: 400 }} placeholder="検索" onSearch={onSearch} allowClear />
+      <Search  style={{ width: 400 }} placeholder="検索" onSearch={onSearch} allowClear />
     </div>
   )
 }

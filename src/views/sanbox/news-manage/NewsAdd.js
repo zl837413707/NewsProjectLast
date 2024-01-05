@@ -98,7 +98,7 @@ export default function NewsAdd() {
 
           >
             <Form.Item
-              label="ニュースタイトル"
+              label="タイトル"
               name="title"
               rules={[
                 {
@@ -111,7 +111,7 @@ export default function NewsAdd() {
             </Form.Item>
 
             <Form.Item
-              label="ニュース分類"
+              label="分類"
               name="categoryId"
               rules={[
                 {

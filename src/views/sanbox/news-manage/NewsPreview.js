@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
-import { Descriptions, Button } from 'antd';
+import { Descriptions, Button, Statistic } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
 import AxiosInstance from '../../../utils/axios';
@@ -15,8 +15,8 @@ export default function NewsPreview() {
     })
   }, [id])
 
-  const auditList = ['草稿箱', '审核中', '已通过', '未通过']
-  const pubilishList = ['未发布', '待发布', '已上线', '已下线']
+  const auditList = ['下書きボックス', '審査中', '承認済み', '不承認']
+  const pubilishList = ['未公開', '公開待ち', '公開済み', 'オフライン']
 
   const getColorByPublishState = (state) => {
     switch (state) {
@@ -36,29 +36,29 @@ export default function NewsPreview() {
   const items = [
     {
       key: '1',
-      label: '创建者',
+      label: '作成者',
       children: newsInfo.author,
     },
     {
       key: '2',
-      label: '创建时间',
+      label: '作成時間',
       children: moment(newsInfo.createTime).format("YYYY-MM-DD HH:mm:ss"),
 
     },
     {
       key: '3',
-      label: '发布时间',
+      label: '公開時間',
       children: newsInfo.publishTime ? moment(newsInfo.publishTime).format("YYYY-MM-DD HH:mm:ss") : '-',
 
     },
     {
       key: '4',
-      label: '区域',
+      label: 'エリア',
       children: newsInfo.region,
     },
     {
       key: '5',
-      label: '审核状态',
+      label: '審査状態',
       children: (
         <span style={getColorByPublishState(newsInfo.auditState)}>
           {auditList[newsInfo.auditState]}
@@ -67,7 +67,7 @@ export default function NewsPreview() {
     },
     {
       key: '6',
-      label: '发布状态',
+      label: '公開状態',
       children: (
         <span style={getColorByPublishState(newsInfo.publishState)}>
           {pubilishList[newsInfo.publishState]}
@@ -76,22 +76,18 @@ export default function NewsPreview() {
     },
     {
       key: '7',
-      label: '访问数量',
-      children: newsInfo.view,
+      label: 'いいね数',
+      children: newsInfo && newsInfo.star !== undefined ? <Statistic value={newsInfo.star} /> : null,
     },
     {
       key: '8',
-      label: '点赞数量',
-      children: newsInfo.star,
+      label: 'アクセス数',
+      children: newsInfo && newsInfo.view !== undefined ? <Statistic value={(newsInfo.view + 1)} /> : null,
+      span: 2
     },
     {
       key: '9',
-      label: '评论数量',
-      children: 0,
-    },
-    {
-      key: '10',
-      label: '文章本体',
+      label: '記事本体',
       children: (<div dangerouslySetInnerHTML={{ __html: newsInfo.content }} />),
     },
   ]

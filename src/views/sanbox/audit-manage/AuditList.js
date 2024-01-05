@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Table, Tag, Button, message } from 'antd'
 import {
-  ToTopOutlined,  RollbackOutlined
+  ToTopOutlined, RollbackOutlined
 } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import AxiosInstance from '../../../utils/axios'
@@ -18,14 +18,14 @@ export default function AuditList() {
   }, [userInfo.username])
 
   const backColor = ['red', 'orange', 'green', 'gray']
-  const auditTxt = ['草稿箱', '审核中', '已通过', '未通过']
-  const buttonTxt = ['', '撤销', '发布', '撤销']
+  const auditTxt = ['下書きボックス', '審査中', '承認済み', '不承認']
+  const buttonTxt = ['', '取り消し', '公開', '取り消し']
 
   const buttonIcon = ['', <RollbackOutlined />, <ToTopOutlined />, <RollbackOutlined />]
 
   const columns = [
     {
-      title: '新闻标题',
+      title: 'ニュースタイトル',
       dataIndex: 'title',
       render: (title, item) => {
         return (
@@ -36,18 +36,18 @@ export default function AuditList() {
       }
     },
     {
-      title: '作者',
+      title: '作成者',
       dataIndex: 'author',
     },
     {
-      title: '新闻分类',
+      title: 'ニュース分類',
       dataIndex: 'category',
       render: (category) => {
         return <div>{category.title}</div>
       }
     },
     {
-      title: '审核状态',
+      title: '審査状態',
       dataIndex: 'auditState',
       render: (auditState) => {
         return <Tag color={backColor[auditState]}>{auditTxt[auditState]}</Tag>
@@ -69,12 +69,12 @@ export default function AuditList() {
     console.log(item);
     if (item.auditState === 1 || item.auditState === 3) {
       AxiosInstance.patch(`/news/${item.id}`, { auditState: 0 }).then(() => {
-        message.success('退回成功')
+        message.success('取り消し成功')
         getData()
       })
     } else {
       AxiosInstance.patch(`/news/${item.id}`, { publishState: 2, publishTime: Date.now() }).then(() => {
-        message.success('发布成功')
+        message.success('公開成功')
         navigate('/publish-manage/published')
       })
     }
