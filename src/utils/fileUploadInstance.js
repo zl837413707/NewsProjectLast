@@ -2,7 +2,7 @@ import axios from 'axios';
 import { store } from '../redux/store';
 
 const fileUploadInstance = axios.create({
-  baseURL: 'http://127.0.0.1:8103/api', // 设置默认的base URL
+  baseURL: 'https://node-omega-bice.vercel.app/api', // 设置默认的base URL
   timeout: 10000, // 设置请求超时时间
 });
 
