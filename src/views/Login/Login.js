@@ -23,7 +23,7 @@ export default function Login() {
           navigate('/');
         }, 500);
       } else {
-        message.error('账号不存在或密码错误')
+        message.error('アカウントまたはパスワードが間違えました')
       }
     }).catch((err) => {
       console.log(err);
@@ -42,13 +42,13 @@ export default function Login() {
       >
         <Form.Item
           name="username"
-          rules={[{ required: true, message: 'Please input your Username!' }]}
+          rules={[{ required: true, message: 'ユーザー名を入力してください' }]}
         >
           <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
         </Form.Item>
         <Form.Item
           name="password"
-          rules={[{ required: true, message: 'Please input your Password!' }]}
+          rules={[{ required: true, message: 'パスワードを入力してください' }]}
         >
           <Input
             prefix={<LockOutlined className="site-form-item-icon" />}
