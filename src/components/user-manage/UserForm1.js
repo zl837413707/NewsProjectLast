@@ -73,7 +73,7 @@ const UserForm1 = forwardRef((props, ref) => {
     }
 
     setIsDisabled(props.isDisabledUp)
-  }, [])
+  }, [props.isDisabledUp, props.isedit, props.regionList, props.roleList, userInfoData])
 
   const handleChange = (value) => {
     console.log(value);
