@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react'
-import AxiosInstance from '../../../utils/axios'
+import { useSelector } from 'react-redux'
+import axiosInstance from '../../../utils/index'
 import NewPublish from '../../../components/publish-manage/NewPublish'
 
 export default function Unpublished() {
   const [dataSource, setDataSource] = useState([])
-  const userInfo = JSON.parse(localStorage.getItem('token'))
+  const userInfoData = useSelector(state => state.UserInfoReducer)
 
   useEffect(() => {
-    AxiosInstance.get(`/news?auhtou=${userInfo.username}&publishState=3&_expand=category`).then((res) => {
+    axiosInstance.get('/getallnews', {
+      params: {
+        publishState: 'sunset'
+      }
+    }).then((res) => {
       setDataSource(res.data)
     })
-  }, [userInfo.username])
+  }, [userInfoData.username])
+
   return (
     <div>
-      <NewPublish dataSource={dataSource}></NewPublish>
+      <NewPublish dataSource={dataSource} published={'sunset'}></NewPublish>
     </div>
   )
 }

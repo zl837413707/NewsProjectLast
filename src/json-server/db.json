@@ -64,12 +64,12 @@
       "id": 7
     },
     {
-      "username": "咕噜墩子",
+      "username": "KTTV1",
       "password": "123",
       "roleState": true,
       "default": false,
       "region": "アジア",
-      "roleId": 3,
+      "roleId": 2,
       "id": 8
     }
   ],
@@ -286,10 +286,6 @@
       "roleName": "スーパー管理者",
       "roleType": 1,
       "rights": [
-        "/user-manage/add",
-        "/user-manage/delete",
-        "/user-manage/update",
-        "/user-manage/list",
         "/right-manage",
         "/right-manage/role/list",
         "/right-manage/right/list",
@@ -311,7 +307,6 @@
         "/publish-manage/unpublished",
         "/publish-manage/published",
         "/publish-manage/sunset",
-        "/user-manage",
         "/home"
       ]
     },
@@ -444,7 +439,7 @@
       "publishState": 2,
       "createTime": 1615777743864,
       "star": 1030,
-      "view": 2182,
+      "view": 2183,
       "id": 1,
       "publishTime": 1615778496314
     },
@@ -459,7 +454,7 @@
       "publishState": 2,
       "createTime": 1615778694831,
       "star": 511,
-      "view": 846,
+      "view": 847,
       "id": 2,
       "publishTime": 1615778911028
     },
@@ -486,12 +481,12 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 3,
+      "publishState": 2,
       "createTime": 1615778740202,
       "star": 800,
       "view": 869,
       "id": 4,
-      "publishTime": 1615778912481
+      "publishTime": 1704734155281
     },
     {
       "title": "Components and Props",
@@ -561,7 +556,7 @@
       "author": "admin",
       "roleId": 1,
       "auditState": 2,
-      "publishState": 2,
+      "publishState": 1,
       "createTime": 1703786534952,
       "star": 0,
       "view": 3,
@@ -649,7 +644,7 @@
       "author": "西门吹灯",
       "roleId": 3,
       "auditState": 2,
-      "publishState": 2,
+      "publishState": 1,
       "createTime": 1703962044868,
       "star": 0,
       "view": 0,
@@ -663,7 +658,7 @@
       "region": "アジア",
       "author": "铁锤",
       "roleId": 2,
-      "auditState": 2,
+      "auditState": 1,
       "publishState": 2,
       "createTime": 1704222020383,
       "star": 0,
@@ -678,7 +673,7 @@
       "region": "全球",
       "author": "admin",
       "roleId": 1,
-      "auditState": 2,
+      "auditState": 1,
       "publishState": 2,
       "createTime": 1704224821146,
       "star": 0,

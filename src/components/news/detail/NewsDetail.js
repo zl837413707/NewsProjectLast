@@ -1,25 +1,49 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
-import { Descriptions, Button, Statistic, Badge } from 'antd';
-import { ArrowLeftOutlined, LikeFilled } from '@ant-design/icons';
-import moment from 'moment';
-import AxiosInstance from '../../../utils/axios';
+import { useParams, useNavigate } from 'react-router-dom'
+import { Descriptions, Button, Statistic, message } from 'antd'
+import { ArrowLeftOutlined, LikeFilled } from '@ant-design/icons'
+import moment from 'moment'
+import axiosInstance from '../../../utils/index'
+import style from './index.module.css'
 
 export default function NewsPreview() {
   const [newsInfo, setNewsInfo] = useState([])
   const [like, setLike] = useState(false)
   const navigate = useNavigate()
   const { id } = useParams()
+
   useEffect(() => {
-    AxiosInstance.get(`/news/${id}?_expand=category&_expand=role`).then((res) => {
-      setNewsInfo(res.data)
-      return res.data
-    }).then((res) => {
-      AxiosInstance.patch(`/news/${id}`, {
-        view: res.view + 1,
+    axiosInstance.get(`/getallnews`)
+      .then((res) => {
+        const newData = res.data.filter(item => item.id.toString() === id);
+        setNewsInfo(newData[0]);
+
+        const starIs = localStorage.getItem('newsStar')
+        if (starIs) {
+          const starList = JSON.parse(starIs)
+          const flag = starList.find(item => item.id === newData[0].id)
+          if (flag) {
+            setLike(true)
+          }
+        }
+
+        // 直接更新访问量
+        axiosInstance.patch(`/updatenewsaccess/${id}`, {
+          view: newData[0].view + 1 // 使用最新获取的数据更新访问量
+        })
+          .then(() => {
+            console.log('success');
+          })
+          .catch(err => {
+            console.log(err);
+          });
+
+        return res.data;
       })
-    })
-  }, [id])
+      .catch(err => {
+        console.log(err);
+      });
+  }, [id]);
 
   const items = [
     {
@@ -49,24 +73,43 @@ export default function NewsPreview() {
       children: newsInfo && newsInfo.star !== undefined ? <Statistic value={newsInfo.star} /> : null
 
     },
-    {
-      key: '6',
-      label: '記事本体',
-      children: (<div dangerouslySetInnerHTML={{ __html: newsInfo.content }} />),
-    },
+    // {
+    //   key: '6',
+    //   label: '記事本体',
+    //   children: (<div style={{ maxWidth: '3000px' }} dangerouslySetInnerHTML={{ __html: newsInfo.content }} />),
+    // },
   ]
 
   const likeClick = () => {
+    if (like === true) return message.warning('くり返しいいねできません')
+    const existingNewsStar = localStorage.getItem('newsStar')
+    let existingNewsStarArr = existingNewsStar ? JSON.parse(existingNewsStar) : [];
+
+    existingNewsStarArr.push({ id: newsInfo.id, star: true });
+
+    const updatedNewsStar = JSON.stringify(existingNewsStarArr)
+
+    localStorage.setItem('newsStar', updatedNewsStar)
     setLike(!like)
+
+    axiosInstance.patch(`/updatenewsstar/${newsInfo.id}`, {
+      star: newsInfo.star + 1
+    }).then((res) => {
+      console.log(newsInfo);
+      setNewsInfo({ ...newsInfo, star: newsInfo.star + 1 })
+    }).catch(err => {
+      console.log(err);
+    })
   }
 
 
   return (
-    <div style={{ paddingBottom: 50 }}>
+    <div style={{ paddingBottom: 50, maxWidth: '2000px' }}>
       <Button style={{ margin: '30px 0 30px 0' }} icon={<ArrowLeftOutlined />} onClick={() => { navigate(-1) }} ></Button>
-      <Descriptions title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.title}--{newsInfo.category?.title}
+      <Descriptions layout="vertical" title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.newsTitle}--{newsInfo?.title}
         <span style={{ cursor: 'pointer', marginLeft: 10 }} onClick={likeClick}><LikeFilled style={{ fontSize: 20, color: like ? 'red' : '' }} /></span></span>}
         bordered items={items} contentStyle={{ width: '100px' }} labelStyle={{ width: '100px' }} />
+      <div className={style.newsContent} dangerouslySetInnerHTML={{ __html: newsInfo.content }}></div>
     </div >
 
   )

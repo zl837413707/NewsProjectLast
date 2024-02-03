@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import AxiosInstance from '../../../utils/axios'
+import { useSelector } from 'react-redux'
+import axiosInstance from '../../../utils/index'
 import { Table, Button, message } from 'antd'
 import {
   CloseOutlined, CheckOutlined
@@ -8,22 +9,28 @@ import { Link } from 'react-router-dom';
 
 export default function Audit() {
   const [dataSource, setDataSource] = useState([])
-  const userInfo = JSON.parse(localStorage.getItem('token'))
+  const userInfoData = useSelector(state => state.UserInfoReducer)
+
   useEffect(() => {
-    AxiosInstance.get('/news?auditState=1&_expand=role&_expand=category').then((res) => {
-      // 如果是管理员直接展示所有数据,不是管理员根据id遍历
-      setDataSource(userInfo.roleId === 1 ? res.data : [
-        ...res.data.filter(item => item.username === userInfo.username),
-        ...res.data.filter(item => item.region === userInfo.region && item.roleId >= 2)
+    axiosInstance.get('/getallnews', {
+      params: {
+        auditState: 1
+      }
+    }).then((res) => {
+      const sortedData = res.data.sort((a, b) => a.id - b.id)
+      setDataSource(userInfoData.roleId === 1 ? res.data : [
+        ...sortedData.filter(item => item.author === userInfoData.username),
+        ...sortedData.filter(item => item.region === userInfoData.region && (item.roleId > userInfoData.roleId))
       ])
     })
-  }, [userInfo.region, userInfo.roleId, userInfo.username])
+  }, [userInfoData.region, userInfoData.roleId, userInfoData.username])
+
 
 
   const columns = [
     {
       title: 'ニュースタイトル',
-      dataIndex: 'title',
+      dataIndex: 'newsTitle',
       render: (title, item) => {
         return (
           <Link to={`/news-manage/preview/${item.id}`}>
@@ -38,10 +45,8 @@ export default function Audit() {
     },
     {
       title: 'ニュース分類',
-      dataIndex: 'category',
-      render: (category) => {
-        return <div>{category.title}</div>
-      }
+      dataIndex: 'title',
+
     },
     {
       title: '操作',
@@ -55,7 +60,7 @@ export default function Audit() {
   ]
 
   const handleAudit = (item, auditState, publishState) => {
-    AxiosInstance.patch(`/news/${item.id}`, {
+    axiosInstance.patch(`/updatenewsauditstate/${item.id}`, {
       auditState,
       publishState
     }).then(() => {
@@ -65,11 +70,15 @@ export default function Audit() {
   }
 
   const getData = () => {
-    AxiosInstance.get('/news?auditState=1&_expand=role&_expand=category').then((res) => {
-      // 如果是管理员直接展示所有数据,不是管理员根据id遍历
-      setDataSource(userInfo.roleId === 1 ? res.data : [
-        ...res.data.filter(item => item.username === userInfo.username),
-        ...res.data.filter(item => item.region === userInfo.region && item.roleId >= 2)
+    axiosInstance.get('/getallnews', {
+      params: {
+        auditState: 1
+      }
+    }).then((res) => {
+      const sortedData = res.data.sort((a, b) => a.id - b.id)
+      setDataSource(userInfoData.roleId === 1 ? res.data : [
+        ...sortedData.filter(item => item.author === userInfoData.username),
+        ...sortedData.filter(item => item.region === userInfoData.region && (item.roleId > userInfoData.roleId))
       ])
     })
   }
@@ -77,7 +86,7 @@ export default function Audit() {
   return (
     <div>
       <Table style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} pagination={{
-        pageSize: 6
+        pageSize: 7
       }} rowKey={item => item.id} />
     </div>
   )

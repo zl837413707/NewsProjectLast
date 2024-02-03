@@ -3,7 +3,8 @@ import {
   EditOutlined, DeleteOutlined, ExclamationCircleFilled, UserAddOutlined
 } from '@ant-design/icons'
 import { Table, Button, Modal, Switch } from 'antd'
-import AxiosInstance from '../../../utils/axios'
+import { useSelector } from 'react-redux'
+import axiosInstance from '../../../utils/index'
 import UserForm from '../../../components/user-manage/UserForm1.js'
 const { confirm } = Modal
 
@@ -17,37 +18,37 @@ export default function UserList() {
   const [currentId, setCurrentId] = useState(0)
   const addForm = useRef(null)
   const updateForm = useRef(null)
-  //本应该后端直接返回数据，node到时候看下能不能改
-  const { roleId, region, username } = JSON.parse(localStorage.getItem('token'))
-
+  const userInfoData = useSelector(state => state.UserInfoReducer)
 
   useEffect(() => {
-    const getData = async () => {
-      await AxiosInstance.get('/users?_expand=role').then((res) => {
-        // 如果是管理员直接展示所有数据,不是管理员根据id遍历
-        setDataSource(roleId === 1 ? res.data : [
-          ...res.data.filter(item => item.username === username),
-          ...res.data.filter(item => item.region === region && item.roleId === 3)
+    if (userInfoData) {
+      axiosInstance.get('/getaccount').then((res) => {
+
+        const sortedData = res.data.data.sort((a, b) => a.id - b.id)
+        setDataSource(userInfoData.roleId === 1 ? sortedData : [
+          ...sortedData.filter(item => item.username === userInfoData.username),
+          ...sortedData.filter(item => item.region === userInfoData.region && item.roleId !== userInfoData.roleId)
         ])
+      }).catch((err) => {
+        console.log(err);
       })
     }
-    getData()
-  }, [roleId, region, username])
+  }, [userInfoData])
+
   useEffect(() => {
-    const getData = async () => {
-      await AxiosInstance.get('/regions').then((res) => {
-        setRegionList(res.data)
-      })
-    }
-    getData()
+    axiosInstance.get('/allregions').then((res) => {
+      setRegionList(res.data)
+    }).catch((err) => {
+      console.log(err);
+    })
   }, [])
+
   useEffect(() => {
-    const getData = async () => {
-      await AxiosInstance.get('/roles').then((res) => {
-        setRoleList(res.data)
-      })
-    }
-    getData()
+    axiosInstance.get('/allroles').then((res) => {
+      setRoleList(res.data)
+    }).catch((err) => {
+      console.log(err);
+    })
   }, [])
 
   //表格数据
@@ -58,21 +59,17 @@ export default function UserList() {
       filters: [...regionList.map(item => ({
         text: item.title,
         value: item.value
-      })),
-      {
-        text: '全球',
-        value: ''
-      }],
+      }))],
       onFilter: (value, record) => record.region === value,
       render: (region) => {
-        return <b>{region ? region : '全球'}</b>
+        return <b>{region}</b>
       }
     },
     {
       title: 'ロール名',
-      dataIndex: 'role',
-      render: (role) => {
-        return role?.roleName
+      dataIndex: 'roleName',
+      render: (roleName) => {
+        return roleName
       }
     },
     {
@@ -83,15 +80,15 @@ export default function UserList() {
       title: 'ステータス',
       dataIndex: 'roleState',
       render: (roleState, item) => {
-        return <Switch checked={roleState} disabled={item.roleId === roleId ? true : item.default} onChange={() => handleChange(item)}></Switch>
+        return <Switch checked={roleState === 0 ? true : false} disabled={item.roleId === userInfoData.roleId ? true : (item.default === 0 ? true : false)} onChange={() => handleChange(item)}></Switch>
       }
     },
     {
       title: '操作',
       render: (item) => {
         return <div>
-          <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<EditOutlined />} disabled={item.default} onClick={() => updateData(item)} />
-          <Button danger shape="circle" icon={<DeleteOutlined />} disabled={item.roleId === roleId ? true : item.default} onClick={() => showConfirm(item)} />
+          <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<EditOutlined />} disabled={item.default === 0 ? true : false} onClick={() => updateData(item)} />
+          <Button danger shape="circle" icon={<DeleteOutlined />} disabled={item.roleId === userInfoData.roleId ? true : (item.default === 0 ? true : false)} onClick={() => showConfirm(item)} />
         </div >
       }
     }
@@ -112,8 +109,8 @@ export default function UserList() {
   }
   //弹出框确认方法
   const okMethod = (item) => {
-    AxiosInstance.delete(`/users/${item.id}`).then((res) => {
-      getNewData('users')
+    axiosInstance.delete(`/deleteusers/${item.id}`).then((res) => {
+      getNewData()
     })
   }
   //用户数据追加
@@ -121,12 +118,8 @@ export default function UserList() {
     addForm.current.validateFields().then(value => {
       addForm.current.resetFields()
       setOpen(false)
-      AxiosInstance.post('/users', {
-        ...value,
-        "roleState": true,
-        "default": false,
-      }).then(() => {
-        getNewData('users')
+      axiosInstance.post('/addaccount', value).then((res) => {
+        getNewData()
       })
     }).catch(err => {
       console.log(err)
@@ -134,10 +127,10 @@ export default function UserList() {
   }
 
   const handleChange = (item) => {
-    AxiosInstance.patch(`/users/${item.id}`, {
+    axiosInstance.patch(`/changerolestate/${item.id}`, {
       roleState: !item.roleState
     }).then(() => {
-      getNewData('users')
+      getNewData()
     })
   }
 
@@ -155,12 +148,8 @@ export default function UserList() {
   }
   const updateFormData = (item) => {
     updateForm.current.validateFields().then(value => {
-      AxiosInstance.patch(`/users/${currentId}`, {
-        ...value,
-        "roleState": true,
-        "default": false,
-      }).then(() => {
-        getNewData('users')
+      axiosInstance.patch(`/updateusers/${currentId}`, value).then(() => {
+        getNewData()
         setUpdate(false)
       }).catch(err => {
         console.log(err)
@@ -170,12 +159,15 @@ export default function UserList() {
     })
   }
   // Userデータ更新
-  const getNewData = (key) => {
-    AxiosInstance.get(`/${key}?_expand=role`).then((res) => {
-      setDataSource(roleId === 1 ? res.data : [
-        ...res.data.filter(item => item.username === username),
-        ...res.data.filter(item => item.region === region && item.roleId === 3)
+  const getNewData = () => {
+    axiosInstance.get('/getaccount').then((res) => {
+      const sortedData = res.data.data.sort((a, b) => a.id - b.id)
+      setDataSource(userInfoData.roleId === 1 ? sortedData : [
+        ...sortedData.filter(item => item.username === userInfoData.username),
+        ...sortedData.filter(item => item.region === userInfoData.region && item.roleId !== userInfoData.roleId)
       ])
+    }).catch((err) => {
+      console.log(err);
     })
   }
 
@@ -186,7 +178,7 @@ export default function UserList() {
         追加
       </Button>
       <Table style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} rowKey={(item) => item.id} pagination={{
-        pageSize: 6
+        pageSize: 7
       }} />
       <Modal
         open={open}
@@ -203,7 +195,7 @@ export default function UserList() {
       </Modal>
       <Modal
         open={update}
-        title="要員の更新"
+        title="ユーザー更新"
         okText="確認"
         cancelText="キャンセル"
         onCancel={() => { setUpdate(false) }}

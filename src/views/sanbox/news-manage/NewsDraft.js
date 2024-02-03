@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 import {
   EditOutlined, UploadOutlined, DeleteOutlined, ExclamationCircleFilled,
 } from '@ant-design/icons'
 import { Table, Button, Modal, message } from 'antd'
-import AxiosInstance from '../../../utils/axios'
+import axiosInstance from '../../../utils/index'
 const { confirm } = Modal
 
 export default function NewsDraft() {
   const [dataSource, setDataSource] = useState([])
+  const userInfoData = useSelector(state => state.UserInfoReducer)
   const navigate = useNavigate()
-  const userInfo = JSON.parse(localStorage.getItem('token'))
 
   useEffect(() => {
-    const getData = async () => {
-      await AxiosInstance.get(`/news?author=${userInfo.username}&auditState=0&_expand=category`).then((res) => {
-        setDataSource(res.data)
-      })
-    }
-    getData()
-  }, [userInfo.username])
+    axiosInstance.get('/getallnews', {
+      params: {
+        auditState: 0
+      }
+    }).then((res) => {
+      const newData = res.data.filter(item => item.author === userInfoData.username)
+      setDataSource(newData.sort((a, b) => a.id - b.id))
+    })
+  }, [userInfoData.username])
 
   //表格数据
   const columns = [
@@ -32,7 +35,7 @@ export default function NewsDraft() {
     },
     {
       title: 'ニュースタイトル',
-      dataIndex: 'title',
+      dataIndex: 'newsTitle',
       render: (title, item) => {
         return (
           <Link to={`/news-manage/preview/${item.id}`}>
@@ -47,10 +50,7 @@ export default function NewsDraft() {
     },
     {
       title: '分類',
-      dataIndex: 'category',
-      render: (category) => {
-        return category.title
-      }
+      dataIndex: 'title',
     },
     {
       title: '操作',
@@ -79,17 +79,25 @@ export default function NewsDraft() {
   }
   //弹出框确认方法
   const okMethod = (item) => {
-    AxiosInstance.delete(`/news/${item.id}`).then((res) => {
+    console.log(item.id);
+    axiosInstance.delete(`/deletenews/${item.id}`).then((res) => {
       const newData = dataSource.filter(data => data.id !== item.id)
       setDataSource(newData)
     })
   }
   //  提交审核
   const handleSubmit = (id) => {
-    AxiosInstance.patch(`/news/${id}`, {
+    axiosInstance.patch(`/updatenewsauditstate/${id}`, {
       auditState: 1
     }).then((res) => {
-      navigate('/audit-manage/list')
+      axiosInstance.get('/getallnews', {
+        params: {
+          auditState: 0
+        }
+      }).then((res) => {
+        const newData = res.data.filter(item => item.author === userInfoData.username)
+        setDataSource(newData.sort((a, b) => a.id - b.id))
+      })
       message.success(`提出成功`)
     })
   }

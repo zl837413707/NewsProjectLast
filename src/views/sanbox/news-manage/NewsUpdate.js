@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { Steps, Button, Form, Input, Select, message } from 'antd'
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import style from './NewsAdd.module.css'
-import AxiosInstance from '../../../utils/axios'
+import axiosInstance from '../../../utils/index'
 import NewEditor from '../../../components/news-manage/NewEditor'
 
 export default function NewsAdd() {
@@ -16,38 +16,40 @@ export default function NewsAdd() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    AxiosInstance.get('/categories').then((res) => {
-      const newData = res.data.map(item => {
+    axiosInstance.get('/getcategories').then((res) => {
+      const newdata = res.data.map(item => {
         return { label: item.title, value: item.id }
       })
-      setCategoriesList(newData)
+      console.log(newdata);
+      setCategoriesList(newdata)
+    }).catch(err => {
+      console.log(err);
     })
   }, [])
 
   useEffect(() => {
-    AxiosInstance.get(`/news/${id}?_expand=category&_expand=role`).then((res) => {
+    axiosInstance.get(`/getallnews`).then((res) => {
+      const newData = res.data.filter(item => item.id.toString() === id);
       form.setFieldsValue({
-        title: res.data.title,
-        categoryId: res.data.category.id
+        title: newData[0].newsTitle,
+        categoryId: newData[0].categoryId
       })
-      setNewsContent(res.data.content)
+      setNewsContent(newData[0].content)
     })
   }, [form, id])
 
   const items = [
     {
-      title: '基本信息',
-      description: '新闻标题,新闻分类',
+      title: '基本情報'
     },
     {
-      title: '新闻内容',
-      description: '新闻主体内容',
+      title: 'ニュース内容'
     },
     {
-      title: '新闻提交',
-      description: '保存草稿或提交审核',
+      title: 'ニュース提出'
     },
   ]
+
   //  点击下一步
   const handleNext = () => {
     if (current === 0) {
@@ -61,7 +63,7 @@ export default function NewsAdd() {
       })
     } else {
       if (isEmptyContent(newsContent)) {
-        message.error('新闻内容不能为空')
+        message.error('ニュース内容を入力してください')
       } else {
         setCurrent(current + 1)
       }
@@ -70,14 +72,18 @@ export default function NewsAdd() {
   }
 
   const hadleSubmit = (state) => {
-    AxiosInstance.patch(`/news/${id}`, {
+    console.log({
       ...newsInfo,
       "content": newsContent,
       "auditState": state,
-      // "publishTime": 0
+    });
+    axiosInstance.patch(`/updatenewscontent/${id}`, {
+      ...newsInfo,
+      "content": newsContent,
+      "auditState": state,
     }).then(() => {
-      navigate(state === 0 ? '/news-manage/draft' : '/audit-manage/list')
-      message.success(`请在${state === 0 ? '草稿箱' : '审核列表'}中查询你的新闻`)
+      navigate('/news-manage/draft')
+      message.success(`修正成功`)
     })
   }
 
@@ -89,7 +95,7 @@ export default function NewsAdd() {
   };
 
   return (
-    <div>
+    <div style={{ width: 1200, margin: '0 auto' }}>
       <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate(-1) }} ></Button>
       <Steps style={{ marginTop: 20 }}
         current={current}
@@ -104,17 +110,17 @@ export default function NewsAdd() {
               span: 2,
             }}
             wrapperCol={{
-              span: 12,
+              span: 22,
             }}
 
           >
             <Form.Item
-              label="新闻标题"
+              label="タイトル"
               name="title"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your username!',
+                  message: 'タイトルを入力してください',
                 },
               ]}
             >
@@ -122,17 +128,19 @@ export default function NewsAdd() {
             </Form.Item>
 
             <Form.Item
-              label="新闻分类"
+              label="分類"
               name="categoryId"
               rules={[
                 {
                   required: true,
-                  message: 'Please input your password!',
+                  message: '分類を選んでください',
                 },
               ]}
             >
               <Select
                 options={categoriesList}
+                onChange={(value) => { console.log(value) }
+                }
               />
             </Form.Item>
           </Form>

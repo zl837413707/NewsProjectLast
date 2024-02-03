@@ -14,7 +14,7 @@ export default function News() {
   const loadingState = useSelector(state => state.LoadingReducer.isLoading);
   return (
     <Spin spinning={loadingState} size='large'>
-      <Flex gap="middle" wrap="wrap">
+      <Flex>
         <Layout className={style.layoutStyle}>
           <Header className={style.headerStyle}><NewsHeader /></Header>
           <Content className={style.contentStyle}><NewsContent /></Content>

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import {
-  UnorderedListOutlined, DeleteOutlined, ExclamationCircleFilled
+  UnorderedListOutlined
 } from '@ant-design/icons';
 import { Table, Button, Modal, Tree } from 'antd'
-import axios from 'axios'
-const { confirm } = Modal
+import axiosInstance from '../../../utils/index';
+
 
 export default function RoleList() {
   const [dataSource, setDataSource] = useState([])
@@ -16,7 +16,7 @@ export default function RoleList() {
   const columns = [
     {
       title: 'ID',
-      dataIndex: 'id',
+      dataIndex: 'roleId',
       render: (id) => {
         return <b>{id}</b>
       }
@@ -32,85 +32,81 @@ export default function RoleList() {
           <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<UnorderedListOutlined />} onClick={() => {
             setIsModalOpen(true)
             setcurrentRightList(item.rights)
-            setCurrentId(item.id)
+            setCurrentId(item.roleId)
           }} />
-          <Button danger shape="circle" icon={<DeleteOutlined />} onClick={() => showConfirm(item)} />
         </div >
       }
     }
   ]
 
   useEffect(() => {
-    // 获取角色列表
-    axios.get('http://localhost:8100/roles').then(res => {
+    axiosInstance.get('/allrolespath').then((res) => {
       setDataSource(res.data)
+    }).catch(err => {
+      console.log(err);
     })
   }, [])
 
   useEffect(() => {
-    // 获取权限列表
-    axios.get('http://localhost:8100/rights?_embed=children').then(res => {
-      setRightList(updateLabelToTitle(res.data))
+    axiosInstance.get('/allrights').then((res) => {
+      const restructuredData = [];
+      const topLevelItems = res.data.filter(item => !item.rightId);
+      topLevelItems.forEach(topItem => {
+        const newItem = {
+          title: topItem.label,
+          id: topItem.id,
+          key: topItem.key,
+          pagepermisson: topItem.pagepermisson,
+          grade: topItem.grade,
+          children: []
+        };
+
+        // 获取子菜单
+        const children = res.data.filter(item => item.rightId === topItem.id);
+        children.forEach(child => {
+          // console.log(child);
+          const newChild = {
+            title: child.label,
+            id: child.id,
+            rightId: child.rightId,
+            key: child.key,
+            grade: child.grade,
+            disableCheckbox: child.pagepermisson === null ? true : false
+            // 可以根据需要将其他属性添加到子级对象中
+          };
+          newItem.children.push(newChild);
+        });
+
+        restructuredData.push(newItem);
+      })
+      setRightList(restructuredData)
+    }).catch(err => {
+      console.log(err);
     })
   }, [])
 
-  //弹出框方法
-  const showConfirm = (item) => {
-    confirm({
-      title: '警告',
-      icon: <ExclamationCircleFilled />,
-      content: '確認ボタンを押すとデータは完全に削除されます、間違いがないかご確認ください',
-      okText: '確認',
-      cancelText: 'キャンセル',
-      onOk() {
-        okMethod(item)
-      }
-    })
-  }
-  //弹出框确认方法
-  const okMethod = (item) => {
-    axios.delete(`http://localhost:8100/roles/${item.id}`).then((res) => {
-      const newData = dataSource.filter(data => data.id !== item.id)
-      setDataSource(newData)
-    })
-  }
-
   // 编辑对话框
   const handleOk = (item) => {
+    axiosInstance.patch(`/updateallrolespath/${currentId}`, {
+      rightContent: currentRightList
+    })
+    setIsModalOpen(false)
     setDataSource(dataSource.map((item) => {
-      if (item.id === currentId) {
+      if (item.roleId === currentId) {
         return { ...item, rights: currentRightList }
       }
       return item
     }))
-    axios.patch(`http://localhost:8100/roles/${currentId}`, {
-      rights: currentRightList
-    })
-    setIsModalOpen(false)
-
   }
 
   const onCheck = (checkedKeys) => {
+    if (currentId === 1) return
     setcurrentRightList(checkedKeys)
   }
 
-  // 递归函数，用于修改对象的"label"为"title"
-  const updateLabelToTitle = (data) => {
-    return data.map(item => {
-      const { label: title, children, ...rest } = item;
-      const updatedItem = { title, ...rest };
-
-      if (children && children.length > 0) {
-        updatedItem.children = updateLabelToTitle(children);
-      }
-
-      return updatedItem;
-    });
-  };
-
   return (
     <div>
-      <Table dataSource={dataSource} columns={columns} rowKey={(item) => item.id}></Table>
+      <Table dataSource={dataSource} columns={columns} rowKey={(item) => item.roleId}></Table>
       <Modal title="権限一覧" open={isModalOpen} onOk={handleOk} onCancel={() => { setIsModalOpen(false) }}>
         <Tree checkable treeData={rightList} checkedKeys={currentRightList} onCheck={onCheck} checkStrictly={false} />
       </Modal>

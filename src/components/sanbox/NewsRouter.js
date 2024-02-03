@@ -2,7 +2,7 @@ import React, { useEffect, useState, lazy, Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Spin } from 'antd';
 import { useSelector } from 'react-redux';
-import axios from 'axios'
+import axiosinstance from '../../utils/index'
 const Home = lazy(() => import('../../views/sanbox/home/Home'));
 const UserList = lazy(() => import('../../views/sanbox/user-manage/UserList'));
 const RoleList = lazy(() => import('../../views/sanbox/right-manage/RoleList'));
@@ -21,19 +21,20 @@ const Sunset = lazy(() => import('../../views/sanbox/publish-manage/Sunset'));
 
 export default function NewsRouter() {
   //这是从localStorage拿的,node的时候再考虑如何获取这些信息
-  const { role: { rights } } = JSON.parse(localStorage.getItem("token"))
+  const userInfoData = useSelector(state => state.UserInfoReducer)
   const [routeList, setRouteList] = useState([])
   const [dataLoaded, setDataLoaded] = useState(false)
   const loadingState = useSelector(state => state.LoadingReducer.isLoading)
+
   useEffect(() => {
-    Promise.all([
-      axios.get(`http://localhost:8100/rights`),
-      axios.get(`http://localhost:8100/children`)
-    ]).then((res) => {
-      setRouteList([...res[0].data, ...res[1].data])
+    axiosinstance.get('/allrights').then((res) => {
+      setRouteList(res.data)
       setDataLoaded(true)
+    }).catch(err => {
+      console.log(err);
     })
   }, [])
+
   const RouterList = {
     "/home": <Home />,
     "/user-manage/list": <UserList />,
@@ -51,7 +52,10 @@ export default function NewsRouter() {
     "/publish-manage/sunset": <Sunset />
   }
   const isPerssion = (item) => {
-    return rights.includes(item.key) && (item.pagepermisson === 1 || item.routepermisson === 1)
+    if (userInfoData.rightContent) {
+      return userInfoData.rightContent.includes(item.key) && (item.pagepermisson === 1 || item.routepermisson === 1)
+    }
+    return null
   }
 
   return (

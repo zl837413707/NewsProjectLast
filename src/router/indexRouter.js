@@ -8,7 +8,7 @@ const Detail = lazy(() => import('../views/news/detail/Detail'));
 export default function IndexRouter() {
     function PrivateRoute() {
         const navigate = useNavigate();
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem('nodeToken');
 
         useEffect(() => {
             if (!token) {

@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import style from './index.module.css'
 import NewsHeader from '../../../components/news/header/NewsHeader'
 import NewsDetail from '../../../components/news/detail/NewsDetail';
-const { Header, Footer, Content } = Layout;
+const { Header, Content } = Layout;
 
 
 

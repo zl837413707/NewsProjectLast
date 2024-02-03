@@ -1,5 +1,5 @@
 export const CollapsedReducer = (prevState = {
-  isCollapsed: false, // 初始化不折叠
+  isCollapsed: false,
 }, action) => {
   let { type } = action
   switch (type) {

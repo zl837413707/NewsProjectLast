@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import { Steps, Button, Form, Input, Select, message } from 'antd'
 import style from './NewsAdd.module.css'
-import AxiosInstance from '../../../utils/axios'
+import axiosInstance from '../../../utils/index'
 import NewEditor from '../../../components/news-manage/NewEditor'
 
 export default function NewsAdd() {
@@ -11,15 +12,17 @@ export default function NewsAdd() {
   const [newsInfo, setNewsInfo] = useState({})
   const [newsContent, setNewsContent] = useState('')
   const [form] = Form.useForm()
-  const userInfo = JSON.parse(localStorage.getItem('token'))
+  const userInfoData = useSelector(state => state.UserInfoReducer)
   const navigate = useNavigate()
 
   useEffect(() => {
-    AxiosInstance.get('/categories').then((res) => {
-      const newData = res.data.map(item => {
+    axiosInstance.get('/getcategories').then((res) => {
+      const newdata = res.data.map(item => {
         return { label: item.title, value: item.id }
       })
-      setCategoriesList(newData)
+      setCategoriesList(newdata)
+    }).catch(err => {
+      console.log(err);
     })
   }, [])
 
@@ -55,12 +58,12 @@ export default function NewsAdd() {
   }
 
   const hadleSubmit = (state) => {
-    AxiosInstance.post('/news', {
+    axiosInstance.post('addnews', {
       ...newsInfo,
       "content": newsContent,
-      "region": userInfo.region ? userInfo.region : '全球',
-      "author": userInfo.username,
-      "roleId": userInfo.roleId,
+      "region": userInfoData.region ? userInfoData.region : 'グローバル',
+      "author": userInfoData.username,
+      "roleId": userInfoData.roleId,
       "auditState": state,
       "publishState": 0,
       "createTime": Date.now(),
@@ -68,7 +71,7 @@ export default function NewsAdd() {
       "view": 0,
     }).then(() => {
       navigate(state === 0 ? '/news-manage/draft' : '/audit-manage/list')
-      message.success('提出成功')
+      message.success('成功')
     })
   }
 
@@ -79,7 +82,7 @@ export default function NewsAdd() {
   };
 
   return (
-    <div style={{ width: 1200, margin: '0 auto' }}>
+    <div style={{ margin: '0 auto' }}>
       <Steps style={{ marginTop: 20 }}
         current={current}
         items={items}

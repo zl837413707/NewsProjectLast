@@ -5,6 +5,7 @@ import {
 import { Button, Form, Input, message } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
+import axiosinstance from '../../utils/index'
 import './index.css'
 
 
@@ -13,18 +14,33 @@ export default function Login() {
   const navigate = useNavigate();
 
   const onFinish = async (values) => {
-    await axios.get(`http://localhost:8100/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then((res) => {
-      console.log(res.data);
-      if (res.data.length === 0) {
-        message.error('账号不存在或密码错误');
-      } else {
-        localStorage.setItem('token', JSON.stringify(res.data[0]))
+    // await axios.get(`http://localhost:8100/users?username=${values.username}&password=${values.password}&roleState=true&_expand=role`).then((res) => {
+    //   console.log(res.data);
+    //   if (res.data.length === 0) {
+    //     message.error('账号不存在或密码错误');
+    //   } else {
+    //     localStorage.setItem('token', JSON.stringify(res.data[0]))
+    //     setTimeout(() => {
+    //       navigate('/');
+    //     }, 500);
+    //   }
+    // })
+    axiosinstance.post('/login', {
+      username: values.username,
+      password: values.password
+    }).then((res) => {
+      localStorage.setItem('nodeToken', JSON.stringify(res.data.token))
+      if (res.data.token) {
         setTimeout(() => {
           navigate('/');
         }, 500);
+      } else {
+        message.error('账号不存在或密码错误')
       }
+    }).catch((err) => {
+      console.log(err);
     })
-  };
+  }
 
 
   return <div className="loginBack">

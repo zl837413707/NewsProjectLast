@@ -1,0 +1,9 @@
+.ant-upload-wrapper{
+  display: flex !important;
+  justify-content: center;
+  color: rgb(251, 124, 124);
+}
+
+.ant-upload{
+  margin-inline-end:0px !important;
+}

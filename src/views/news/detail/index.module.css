@@ -10,10 +10,12 @@
   height: 50px;
   background-color: #fff;
   border-bottom: 1px solid #e8ecf2;
+  background-color: #e6ece6;
+  
 }
 
 .contentStyle{
   margin: 0 auto;
-  width: 1200px;
+  min-width: 1200px;
 
 }

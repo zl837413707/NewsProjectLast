@@ -1,11 +1,18 @@
-.logo{
+.logo {
   line-height: 64px;
   color: #fff;
   text-align: center;
   font-weight: 700;
-  /* background-color: #333; */
 }
 
-/* .side{
-  min-width: 200px !important;
-} */
+.side {
+  position: "fixed";
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.ant-layout-sider-children{
+  overflow: auto;
+  height: 100vh !important;
+}

@@ -1,5 +1,5 @@
 export const LoadingReducer = (prevState = {
-  isLoading: true, // 初始化不loading
+  isLoading: true,
 }, action) => {
   let { type, payload } = action
   switch (type) {

@@ -3,15 +3,17 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Descriptions, Button, Statistic } from 'antd';
 import { ArrowLeftOutlined } from '@ant-design/icons';
 import moment from 'moment';
-import AxiosInstance from '../../../utils/axios';
+import axiosInstance from '../../../utils/index';
 
 export default function NewsPreview() {
   const [newsInfo, setNewsInfo] = useState([])
   const navigate = useNavigate()
   const { id } = useParams()
+
   useEffect(() => {
-    AxiosInstance.get(`/news/${id}?_expand=category&_expand=role`).then((res) => {
-      setNewsInfo(res.data)
+    axiosInstance.get(`/getallnews`).then((res) => {
+      const newData = res.data.filter(item => item.id.toString() === id);
+      setNewsInfo(newData[0])
     })
   }, [id])
 
@@ -82,13 +84,13 @@ export default function NewsPreview() {
     {
       key: '8',
       label: 'アクセス数',
-      children: newsInfo && newsInfo.view !== undefined ? <Statistic value={(newsInfo.view + 1)} /> : null,
+      children: newsInfo && newsInfo.view !== undefined ? <Statistic value={(newsInfo.view)} /> : null,
       span: 2
     },
     {
       key: '9',
       label: '記事本体',
-      children: (<div dangerouslySetInnerHTML={{ __html: newsInfo.content }} />),
+      children: (<div style={{ maxWidth: '1500px', overflow: 'hidden' }} dangerouslySetInnerHTML={{ __html: newsInfo.content }} />),
     },
   ]
 
@@ -96,7 +98,7 @@ export default function NewsPreview() {
   return (
     <div>
       <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate(-1) }} ></Button>
-      <Descriptions title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.title}--{newsInfo.category?.title}</span>} bordered items={items} contentStyle={{ width: '100px' }} labelStyle={{ width: '100px' }} />
+      <Descriptions title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.newsTitle}--{newsInfo?.title}</span>} bordered items={items} contentStyle={{ width: '100px' }} labelStyle={{ width: '100px' }} />
     </div >
 
   )

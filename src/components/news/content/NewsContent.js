@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Menu } from 'antd'
-import AxiosInstance from '../../../utils/axios'
+import { useDispatch } from 'react-redux'
+import axiosInstance from '../../../utils/index'
 import ContentDetail from './ContentDetail';
 import style from './index.module.css'
 import { AllIcon, NewIcon, SocialIcon, EconomyIcon, PoliticsIcon, SportsIcon, WorldIcon } from '../../icons/icons'
@@ -9,6 +10,8 @@ import './index.css'
 export default function NewsContent() {
   const [menuList, setMenuList] = useState([])
   const [currentContent, setCurrentContent] = useState('全て')
+  const [currentId, setCurrentId] = useState(99)
+  const dispatch = useDispatch()
   useEffect(() => {
     const iconList = {
       1: <NewIcon />,
@@ -18,7 +21,7 @@ export default function NewsContent() {
       5: <SportsIcon />,
       6: <WorldIcon />,
     }
-    AxiosInstance.get('/categories').then((res) => {
+    axiosInstance.get('/getcategories').then((res) => {
       const newData = res.data.map(item => {
         return {
           id: item.id,
@@ -35,39 +38,51 @@ export default function NewsContent() {
       };
       newData.unshift(specialItem)
       setMenuList(newData)
+    }).catch(err => {
+      console.log(err);
     })
   }, [])
 
   const onClick = (item) => {
-    if (item.key === '99') {
-      setCurrentContent(menuList[0].label)
-    } else {
-      setCurrentContent(menuList[item.key].label)
+    if (item.key !== currentId.toString()) {
+      dispatch({
+        type: 'getSearchResult',
+        payload: []
+      })
+      if (item.key === '99') {
+        setCurrentContent(menuList[0].label)
+        setCurrentId(menuList[0].id)
+
+      } else {
+        setCurrentContent(menuList[item.key].label)
+        setCurrentId(menuList[item.key].id)
+      }
     }
+
   }
   const iconColor = {
-    '全て': '#cccccc',
-    'IT': '#1296db',
-    '社会': '#ca2826',
-    '経済': '#fa9255',
-    '政治': '#7373f8',
-    'スポーツ': '#13227a',
-    '国際': '#f4ea2a',
+    99: '#e6ece6',
+    1: '#7cb4d4',
+    2: '#c66665',
+    3: '#ffb38a',
+    4: '#9292f1',
+    5: '#353e72',
+    6: '#eee78c',
   }
 
   const fontColor = {
-    '全て': '#000000',
-    'IT': '#000000',
-    '社会': '#ffffff',
-    '経済': '#000000',
-    '政治': '#ffffff',
-    'スポーツ': '#ffffff',
-    '国際': '#000000',
+    99: '#000000',
+    1: '#000000',
+    2: '#ffffff',
+    3: '#000000',
+    4: '#ffffff',
+    5: '#ffffff',
+    6: '#000000',
   }
   return (
-    <div>
+    <div style={{ width: '1200px', margin: '0 auto' }}>
       <div className={style.top}>
-        <h1 style={{ backgroundColor: iconColor[currentContent], color: fontColor[currentContent] }}>{currentContent}</h1>
+        <h1 style={{ backgroundColor: iconColor[currentId], color: fontColor[currentId] }}>{currentContent}</h1>
       </div>
       <div style={{ display: 'flex' }}>
         <Menu

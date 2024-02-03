@@ -1,77 +1,82 @@
 import React, { forwardRef, useState, useEffect } from 'react'
 import { Form, Input, Select } from 'antd'
+import { EyeInvisibleOutlined, EyeTwoTone } from '@ant-design/icons';
+import { useSelector } from 'react-redux';
 
 const UserForm1 = forwardRef((props, ref) => {
+  const userInfoData = useSelector(state => state.UserInfoReducer)
   const [isDisabled, setIsDisabled] = useState(false)
   const [regionList, setRegionList] = useState([])
   const [roleList, setRoleList] = useState([])
 
-  //这是从localStorage拿的,node的时候再考虑如何获取这些信息
-  const { region, roleId } = JSON.parse(localStorage.getItem("token"))
   useEffect(() => {
     // 判断此时点击的是更新还是编辑,以及点击的人是谁
-    if (props.isedit) {
-      if (roleId === 1) {
-        setRegionList(props.regionList)
-        //角色设置
-        const newRoleList = props.roleList.map(obj => {
-          if (obj.id <= roleId) {
-            return { ...obj, disabled: true }
-          }
-          return obj
-        })
-        setRoleList(newRoleList)
-      } else {
-        // 区域设置
-        const newRegionList = props.regionList.map(obj => ({
-          ...obj,
-          disabled: true
-        }))
-        setRegionList(newRegionList)
-        //角色设置
-        const newRoleList = props.roleList.map(obj => {
-          if (obj.id <= roleId) {
-            return { ...obj, disabled: true }
-          }
-          return obj
-        })
-        setRoleList(newRoleList)
+    if (userInfoData) {
+      if (props.isedit) {
+        if (userInfoData.roleId === 1) {
+          setRegionList(props.regionList)
+          //角色设置
+          const newRoleList = props.roleList.map(obj => {
+            if (obj.roleId <= userInfoData.roleId) {
+              return { ...obj, disabled: true }
+            }
+            return obj
+          })
+          setRoleList(newRoleList)
+        } else {
+          // 区域设置
+          const newRegionList = props.regionList.map(obj => ({
+            ...obj,
+            disabled: true
+          }))
+          setRegionList(newRegionList)
+          //角色设置
+          const newRoleList = props.roleList.map(obj => {
+            if (obj.roleId <= userInfoData.roleId) {
+              return { ...obj, disabled: true }
+            }
+            return obj
+          })
+          setRoleList(newRoleList)
 
-      }
-    } else {
-      if (roleId === 1) {
-        setRegionList(props.regionList)
-        //角色设置
-        const newRoleList = props.roleList.map(obj => {
-          if (obj.id <= roleId) {
-            return { ...obj, disabled: true }
-          }
-          return obj
-        })
-        setRoleList(newRoleList)
+        }
       } else {
-        // 区域设置
-        const newRegionList = props.regionList.map(obj => {
-          if (obj.title !== region) {
-            return { ...obj, disabled: true }
-          }
-          return { ...obj, disabled: false }
-        })
-        setRegionList(newRegionList)
-        //角色设置
-        const newRoleList = props.roleList.map(obj => {
-          if (obj.id <= roleId) {
-            return { ...obj, disabled: true }
-          }
-          return obj
-        })
-        setRoleList(newRoleList)
+        if (userInfoData.roleId === 1) {
+          setRegionList(props.regionList)
+          //角色设置
+          const newRoleList = props.roleList.map(obj => {
+            if (obj.roleId <= userInfoData.roleId) {
+              return { ...obj, disabled: true }
+            }
+            return obj
+          })
+          setRoleList(newRoleList)
+        } else {
+          // 区域设置
+          const newRegionList = props.regionList.map(obj => {
+            if (obj.title !== userInfoData.region) {
+              return { ...obj, disabled: true }
+            }
+            return { ...obj, disabled: false }
+          })
+          setRegionList(newRegionList)
+          //角色设置
+          const newRoleList = props.roleList.map(obj => {
+            if (obj.id <= userInfoData.roleId) {
+              return { ...obj, disabled: true }
+            }
+            return obj
+          })
+          setRoleList(newRoleList)
+        }
       }
     }
+
     setIsDisabled(props.isDisabledUp)
   }, [])
 
   const handleChange = (value) => {
+    console.log(value);
     if (value === 1) {
       setIsDisabled(true)
       ref.current.setFieldsValue({
@@ -86,7 +91,7 @@ const UserForm1 = forwardRef((props, ref) => {
     <Form layout="vertical" ref={ref}>
       <Form.Item
         name="username"
-        label="用户名"
+        label="ユーザー名"
         rules={[
           {
             required: true,
@@ -98,7 +103,7 @@ const UserForm1 = forwardRef((props, ref) => {
       </Form.Item>
       <Form.Item
         name="password"
-        label="密码"
+        label="パスワード"
         rules={[
           {
             required: true,
@@ -106,11 +111,13 @@ const UserForm1 = forwardRef((props, ref) => {
           },
         ]}
       >
-        <Input />
+        <Input.Password
+          iconRender={(visible) => (visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />)}
+        />
       </Form.Item>
       <Form.Item
         name="roleId"
-        label="角色"
+        label="ロール"
         rules={[
           {
             required: true,
@@ -121,12 +128,12 @@ const UserForm1 = forwardRef((props, ref) => {
         <Select
           onChange={handleChange}
           options={roleList}
-          fieldNames={{ label: 'roleName', value: 'id' }}
+          fieldNames={{ label: 'roleName', value: 'roleId' }}
         />
       </Form.Item>
       <Form.Item
         name="region"
-        label="地区"
+        label="エリア"
         rules={isDisabled ? [] : [
           {
             required: true,

@@ -1,10 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react'
-import {
-  DeleteOutlined, ExclamationCircleFilled, UserAddOutlined
-} from '@ant-design/icons';
-import { Table, Button, Modal, Form, Input } from 'antd'
-import AxiosInstance from '../../../utils/axios'
-const { confirm } = Modal;
+import { Table, Form, Input } from 'antd'
+import axiosInstance from '../../../utils/index'
 
 export default function RIghtList() {
   const [dataSource, setDataSource] = useState([])
@@ -12,8 +8,7 @@ export default function RIghtList() {
 
   useEffect(() => {
     const getData = async () => {
-      await AxiosInstance.get('/categories').then((res) => {
-        console.log(res.data);
+      await axiosInstance.get('/getcategories').then((res) => {
         setDataSource(res.data)
       })
     }
@@ -42,31 +37,10 @@ export default function RIghtList() {
     }
   ]
 
-  //弹出框方法
-  const showConfirm = (item) => {
-    confirm({
-      title: '警告',
-      icon: <ExclamationCircleFilled />,
-      content: '確認ボタンを押すとデータは完全に削除されます、間違いがないかご確認ください',
-      okText: '確認',
-      cancelText: 'キャンセル',
-      onOk() {
-        okMethod(item)
-      }
-    });
-  }
-  //弹出框确认方法
-  const okMethod = (item) => {
-    // 判断是1级还是2级目录
-    AxiosInstance.delete(`/categories/${item.id}`).then((res) => {
-      const newData = dataSource.filter(data => data.id !== item.id)
-      setDataSource(newData);
-    })
-  }
 
   // 修改标题
   const handleSave = (item) => {
-    AxiosInstance.patch(`/categories/${item.id}`, {
+    axiosInstance.patch(`/updatecategories/${item.id}`, {
       title: item.title,
       value: item.title
     }).then(() => {
@@ -76,7 +50,7 @@ export default function RIghtList() {
   }
 
   const getData = () => {
-    AxiosInstance.get('/categories').then((res) => {
+    axiosInstance.get('/getcategories').then((res) => {
       setDataSource(res.data)
     })
   }

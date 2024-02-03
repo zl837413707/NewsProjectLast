@@ -1,28 +1,53 @@
 import React, { useState, useEffect } from 'react'
 import {
-  SendOutlined, SettingOutlined, DeleteOutlined, ExclamationCircleFilled, CheckOutlined, CloseOutlined
+  SendOutlined, SettingOutlined, CheckOutlined, CloseOutlined
 } from '@ant-design/icons';
-import { Table, Tag, Button, Modal, Popover, Switch } from 'antd'
-import AxiosInstance from '../../../utils/axios'
+import { Table, Tag, Button, Popover, Switch } from 'antd'
+import axiosInstance from '../../../utils/index';
 import './index.css'
-const { confirm } = Modal;
 
 export default function RightList() {
   const [dataSource, setDataSource] = useState([])
 
   useEffect(() => {
-    const getData = async () => {
-      await AxiosInstance.get('/rights?_embed=children').then((res) => {
-        res.data.forEach((res) => {
-          if (res.children.length === 0) {
-            res.children = ''
-          }
-        })
-        setDataSource(res.data)
+    axiosInstance.get('/allrights').then((res) => {
+      const restructuredData = [];
+      const topLevelItems = res.data.filter(item => !item.rightId);
+      topLevelItems.forEach(topItem => {
+        const newItem = {
+          label: topItem.label,
+          id: topItem.id,
+          key: topItem.key,
+          pagepermisson: topItem.pagepermisson,
+          grade: topItem.grade,
+          children: []
+        };
+
+        // 获取子菜单
+        const children = res.data.filter(item => item.rightId === topItem.id);
+        children.forEach(child => {
+          const newChild = {
+            label: child.label,
+            id: child.id,
+            rightId: child.rightId,
+            key: child.key,
+            grade: child.grade,
+            pagepermisson: child.pagepermisson
+            // 可以根据需要将其他属性添加到子级对象中
+          };
+          newItem.children.push(newChild);
+        });
+        if (newItem.children.length === 0) {
+          delete newItem.children;
+        }
+        restructuredData.push(newItem);
       })
-    }
-    getData()
+      setDataSource(restructuredData)
+    }).catch(err => {
+      console.log(err);
+    })
   }, [])
+
 
   //表格数据
   const columns = [
@@ -48,56 +73,26 @@ export default function RightList() {
       title: '操作',
       render: (item) => {
         return <div>
-          <Popover content={<div style={{ textAlign: 'center' }}><Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} checked={item.pagepermisson} onChange={() => switchMethod(item)}></Switch></div>} title="配置" trigger="click" >
-            <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<SettingOutlined />} disabled={item.pagepermisson === undefined} />
+          <Popover content={<div style={{ textAlign: 'center' }}><Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} checked={item.pagepermisson} disabled={item.key === '/right-manage' ? true : false} onChange={() => switchMethod(item)}></Switch></div>} title="配置" trigger="click" >
+            <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<SettingOutlined />} disabled={item.pagepermisson === null} />
           </Popover >
-          <Button danger shape="circle" icon={<DeleteOutlined />} onClick={() => showConfirm(item)} />
         </div >
       }
     }
   ]
 
-  //弹出框方法
-  const showConfirm = (item) => {
-    confirm({
-      title: '警告',
-      icon: <ExclamationCircleFilled />,
-      content: '確認ボタンを押すとデータは完全に削除されます、間違いがないかご確認ください',
-      okText: '確認',
-      cancelText: 'キャンセル',
-      onOk() {
-        okMethod(item)
-      }
-    });
-  }
-  //弹出框确认方法
-  const okMethod = (item) => {
-    // 判断是1级还是2级目录
-    if (item.grade === 1) {
-      AxiosInstance.delete(`/rights/${item.id}`).then((res) => {
-        const newData = dataSource.filter(data => data.id !== item.id)
-        setDataSource(newData);
-      })
-    } else {
-      AxiosInstance.delete(`/children/${item.id}`).then((res) => {
-        const newData = dataSource.filter(data => data.id === item.rightId)
-        newData[0].children = newData[0].children.filter(data => data.id !== item.id)
-        setDataSource([...dataSource]);
-      })
-    }
-  }
   //switch控制权限
   const switchMethod = (item) => {
+    console.log(item);
     item.pagepermisson = item.pagepermisson === 1 ? 0 : 1;
     setDataSource([...dataSource])
     if (item.grade === 1) {
-      AxiosInstance.patch(`/rights/${item.id}`, {
+      axiosInstance.patch(`/changepagepermisson/${item.id}`, {
+        grade: 1,
         pagepermisson: item.pagepermisson
       })
     } else {
-      AxiosInstance.patch(`/children/${item.id}`, {
-        pagepermisson: item.pagepermisson
-      })
+      console.log('000');
     }
 
   }
