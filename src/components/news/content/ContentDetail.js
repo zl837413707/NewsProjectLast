@@ -228,7 +228,7 @@ export default function ContentDetail(props) {
           <li className={style.liStyle} key={index} onClick={() => { newsDetail(item) }}>
             <div style={{ display: 'flex', alignItems: 'center', position: 'relative' }}>
               {item.top === 0 ? <PushpinTwoTone style={{ position: 'absolute', left: '-30px', top: '-10px', fontSize: '20px' }} /> : ''}
-              <Avatar size={64} src={item.avatar ? `http://127.0.0.1:8103/images/${item.avatar}` : null} icon={!item.avatar && <UserOutlined />} />
+              <Avatar size={64} src={item.avatar ? `https://storage.googleapis.com/newsdataimages/${item.avatar}` : null} icon={!item.avatar && <UserOutlined />} />
               <span style={{ display: 'inline-block', fontWeight: 700, marginLeft: '30px' }}><HighlightText text={item.newsTitle} highlight={searchResult.value} />
                 <div style={{ color: '#adadad', fontSize: '13px', marginTop: '2px' }}>{item.author}&nbsp;&nbsp;&nbsp;{moment(item.publishTime).format("YYYY-MM-DD HH:mm:ss")}公開</div>
               </span>

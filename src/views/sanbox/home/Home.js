@@ -328,11 +328,7 @@ export default function Home() {
       fileUploadInstance.post('/uploadavatar', formData).then(res => {
         setImageUrl(null)
         setOpen(false)
-        axiosInstance(`/geravatar/${userInfoData.id}`).then((res) => {
-          setCurrentAvatar(res.data[0].avatar)
-        }).catch(err => {
-          console.log(err)
-        },)
+        window.location.reload()
       }).catch(err => {
         console.log(err);
       })
@@ -386,7 +382,7 @@ export default function Home() {
             ]}
           >
             <Meta
-              avatar={<Avatar size={55} src={currentAvatar ? `http://127.0.0.1:8103/images/${currentAvatar}` : null} icon={!currentAvatar && <UserOutlined />} />}
+              avatar={<Avatar size={55} src={currentAvatar ? `https://storage.googleapis.com/newsdataimages/${currentAvatar}` : null} icon={!currentAvatar && <UserOutlined />} />}
               title={userInfo.username}
               description={
                 <div>
