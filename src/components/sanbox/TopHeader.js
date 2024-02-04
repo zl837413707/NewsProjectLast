@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import {
   LeftSquareOutlined, RightSquareOutlined, SmileOutlined
 } from '@ant-design/icons'
 import { Layout, Button, theme, Dropdown } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { useDispatch } from 'react-redux'
-import axiosinstance from '../../utils/index'
+import { useSelector } from 'react-redux'
+
 const { Header } = Layout;
 
 
@@ -25,28 +25,8 @@ const mapDispatchToProps = {
 }
 
 function TopHeader(props) {
-  const [userInfo, setUserInfo] = useState([])
+  const userInfoData = useSelector(state => state.UserInfoReducer)
   const navigate = useNavigate()
-  const dispatch = useDispatch()
-
-  // ユーザー情報取得
-  useEffect(() => {
-    axiosinstance.get('/getuserinfo')
-      .then((res) => {
-        setUserInfo(res.data)
-      })
-      .catch((err) => {
-        navigate('/login')
-        console.log(err)
-      })
-  }, [navigate])
-
-  useEffect(() => {
-    dispatch({
-      type: 'userInfoAdd',
-      payload: userInfo
-    })
-  }, [dispatch, userInfo])
 
   const items = [
     {
@@ -96,7 +76,7 @@ function TopHeader(props) {
         }}
       >
         <i onClick={(e) => e.preventDefault()}>
-          <span style={{ color: 'orange', fontSize: '16px', fontWeight: '700', marginRight: 50 }}>{userInfo.username}</span>
+          <span style={{ color: 'orange', fontSize: '16px', fontWeight: '700', marginRight: 50 }}>{userInfoData.username}</span>
         </i>
       </Dropdown></div>
     </Header>
