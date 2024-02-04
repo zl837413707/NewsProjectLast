@@ -72,7 +72,6 @@ export default function AuditList() {
   ]
 
   const handleChange = (item) => {
-    console.log(item);
     if (item.auditState === 1 || item.auditState === 3) {
       axiosInstance.patch(`/updatenewsauditstate/${item.id}`, { auditState: 0 }).then(() => {
         getData()
