@@ -2,7 +2,7 @@ import React from "react";
 import {
   LockOutlined, UserOutlined
 } from '@ant-design/icons';
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input, message, Card, Tag } from 'antd';
 import { useNavigate } from 'react-router-dom'
 import axiosinstance from '../../utils/index'
 import './index.css'
@@ -32,6 +32,12 @@ export default function Login() {
 
 
   return <div className="loginBack">
+    <Card className="setsumei" title="説明" style={{ position: 'fixed', top: '10%', left: '10%', fontWeight: '700' }}>
+      <p><i>ゲストサイド :</i><Tag color="orange">.../news</Tag></p>
+      <p><i>スーパー管理者 :</i><Tag color="orange">username : admin</Tag><Tag color="orange">password : 123</Tag></p>
+      <p><i>他のアカウント :</i><Tag color="orange">password : 123</Tag></p>
+      <p><i>注意 :</i><Tag color="orange">既存のニュースを削除しないでください。</Tag></p>
+    </Card>
     <div className="loginClass">
       <h3>ニュース情報管理システム</h3>
       <Form

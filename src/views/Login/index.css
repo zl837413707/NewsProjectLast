@@ -40,6 +40,11 @@
   }
 }
 
+.setsumei p i{
+  display: inline-block;
+  width: 120px;
+}
+
 .loginClass{
   position: fixed;
   top: 50%;
