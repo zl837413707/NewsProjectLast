@@ -326,9 +326,12 @@ export default function Home() {
       const formData = new FormData();
       formData.append('file', selectedFile);
       fileUploadInstance.post('/uploadavatar', formData).then(res => {
-        setImageUrl(null)
-        setOpen(false)
-        window.location.reload()
+        const status = res.status;
+        if (status === 200) {
+          setImageUrl(null)
+          setOpen(false)
+          window.location.reload()
+        }
       }).catch(err => {
         console.log(err);
       })
