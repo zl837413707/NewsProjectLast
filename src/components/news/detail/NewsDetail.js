@@ -95,7 +95,6 @@ export default function NewsPreview() {
     axiosInstance.patch(`/updatenewsstar/${newsInfo.id}`, {
       star: newsInfo.star + 1
     }).then((res) => {
-      console.log(newsInfo);
       setNewsInfo({ ...newsInfo, star: newsInfo.star + 1 })
     }).catch(err => {
       console.log(err);

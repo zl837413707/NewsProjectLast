@@ -64,7 +64,6 @@ export default function RoleList() {
         // 获取子菜单
         const children = res.data.filter(item => item.rightId === topItem.id);
         children.forEach(child => {
-          // console.log(child);
           const newChild = {
             title: child.label,
             id: child.id,

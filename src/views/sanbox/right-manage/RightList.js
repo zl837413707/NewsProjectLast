@@ -83,7 +83,6 @@ export default function RightList() {
 
   //switch控制权限
   const switchMethod = (item) => {
-    console.log(item);
     item.pagepermisson = item.pagepermisson === 1 ? 0 : 1;
     setDataSource([...dataSource])
     if (item.grade === 1) {

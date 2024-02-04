@@ -20,7 +20,6 @@ export default function NewsAdd() {
       const newdata = res.data.map(item => {
         return { label: item.title, value: item.id }
       })
-      console.log(newdata);
       setCategoriesList(newdata)
     }).catch(err => {
       console.log(err);
@@ -72,11 +71,6 @@ export default function NewsAdd() {
   }
 
   const hadleSubmit = (state) => {
-    console.log({
-      ...newsInfo,
-      "content": newsContent,
-      "auditState": state,
-    });
     axiosInstance.patch(`/updatenewscontent/${id}`, {
       ...newsInfo,
       "content": newsContent,
@@ -139,8 +133,6 @@ export default function NewsAdd() {
             >
               <Select
                 options={categoriesList}
-                onChange={(value) => { console.log(value) }
-                }
               />
             </Form.Item>
           </Form>

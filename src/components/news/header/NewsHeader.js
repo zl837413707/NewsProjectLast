@@ -20,7 +20,6 @@ export default function NewsHeader() {
         value: value.trim()
       }
     }).then((res) => {
-      console.log(res.data);
       const searchData = {
         value: value.trim(),
         data: res.data

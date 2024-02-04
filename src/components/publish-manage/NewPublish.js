@@ -93,7 +93,6 @@ export default function NewPublish(props) {
         return updatedData
       })
     }).catch(res => {
-      console.log(res);
     })
   }
 
@@ -138,7 +137,6 @@ export default function NewPublish(props) {
   const onSearch = (value) => {
     if (currentCategory === '分類') return message.warning('分類を選んでください')
     if (value === '') return message.warning('キーワードを入力してください')
-    console.log(currentCategory + '---' + value + '---' + props.published)
     axiosInstance.get('/searchnewslimit', {
       params: {
         category: currentCategory,
@@ -147,7 +145,6 @@ export default function NewPublish(props) {
       }
     }).then((res) => {
       setDataSource(res.data)
-      console.log(res.data);
     }).catch(err => {
       console.log(err);
     })

@@ -79,7 +79,6 @@ export default function NewsDraft() {
   }
   //弹出框确认方法
   const okMethod = (item) => {
-    console.log(item.id);
     axiosInstance.delete(`/deletenews/${item.id}`).then((res) => {
       const newData = dataSource.filter(data => data.id !== item.id)
       setDataSource(newData)
