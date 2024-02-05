@@ -3,8 +3,8 @@ import { store } from '../redux/store'
 
 // 创建一个axios实例
 const instance = axios.create({
-  // baseURL: 'http://127.0.0.1:8103/api', // 设置默认的base URL
-  baseURL: 'https://node-gamma-five.vercel.app/api', // 设置默认的base URL
+  // baseURL: 'http://127.0.0.1:8103/api',
+  baseURL: 'https://node-gamma-five.vercel.app/api',
   timeout: 10000, // 设置请求超时时间
   headers: {
     'Content-Type': 'application/json', // 设置默认请求头

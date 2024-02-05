@@ -98,7 +98,7 @@ export default function RightList() {
 
   return (
     <div>
-      <Table style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} pagination={{
+      <Table locale={{ emptyText: ' ' }} style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} pagination={{
         pageSize: 6
       }} />
     </div>

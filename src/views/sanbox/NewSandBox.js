@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import SideMenu from '../../components/sanbox/SideMenu'
 import TopHeader from '../../components/sanbox/TopHeader'
 import NewsRouter from '../../components/sanbox/NewsRouter';
@@ -22,10 +22,20 @@ export default function NewsSandBox() {
         })
       })
       .catch((err) => {
-        navigate('/login')
         console.log(err)
       })
   }, [navigate, dispatch])
+
+  const [routeList, setRouteList] = useState([])
+
+  useEffect(() => {
+    axiosinstance.get('/allrights').then((res) => {
+      setRouteList(res.data)
+    }).catch(err => {
+      console.log(err);
+    })
+  }, [])
+
 
   return (
     <Layout style={{ minHeight: '100vh', }}>
@@ -42,7 +52,7 @@ export default function NewsSandBox() {
             overflowY: 'auto'
           }}
         >
-          <NewsRouter />
+          <NewsRouter routeList={routeList} />
         </Content>
 
       </Layout>

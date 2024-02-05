@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Card, Col, Row, Avatar, List, Drawer, message, Upload, Button } from 'antd'
+import { Card, Col, Row, Avatar, List, Drawer, message, Upload, Button, Spin } from 'antd'
 import { Link } from 'react-router-dom'
 import { SwapOutlined, LoadingOutlined, PlusOutlined, UserOutlined, LikeFilled, FireFilled } from '@ant-design/icons'
 import * as echarts from 'echarts'
@@ -21,9 +21,11 @@ export default function Home() {
   const [userInfo, setUserInfo] = useState([])
   const userInfoData = useSelector(state => state.UserInfoReducer)
   const [loading, setLoading] = useState(false);
+  const [imgloading, setImgLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null)
   const [currentAvatar, setCurrentAvatar] = useState(null)
+
 
   //ユーザー情報取得
   useEffect(() => {
@@ -279,11 +281,11 @@ export default function Home() {
   const beforeUpload = (file) => {
     const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
     if (!isJpgOrPng) {
-      message.error('You can only upload JPG/PNG file!');
+      message.error('JPG/PNGの画像をアップロードしてください');
     }
     const isLt2M = file.size / 1024 / 1024 < 2;
     if (!isLt2M) {
-      message.error('Image must smaller than 2MB!');
+      message.error('2MB以内の画像をアップロードしてください');
     }
     setSelectedFile(file)
     return isJpgOrPng && isLt2M;
@@ -323,19 +325,18 @@ export default function Home() {
 
   const avatarChange = () => {
     if (selectedFile) {
+      setImgLoading(true)
       const formData = new FormData();
       formData.append('file', selectedFile);
       fileUploadInstance.post('/uploadavatar', formData).then(res => {
-        const status = res.status;
-        if (status === 200) {
-          setImageUrl(null)
-          setOpen(false)
-          axiosInstance(`/geravatar/${userInfoData.id}`).then((res) => {
-            setCurrentAvatar(res.data[0].avatar)
-          }).catch(err => {
-            console.log(err)
-          },)
-        }
+        setImageUrl(null)
+        setOpen(false)
+        axiosInstance(`/geravatar/${userInfoData.id}`).then((res) => {
+          setCurrentAvatar(res.data[0].avatar)
+          setImgLoading(false)
+        }).catch(err => {
+          console.log(err)
+        },)
       }).catch(err => {
         console.log(err);
       })
@@ -350,6 +351,7 @@ export default function Home() {
         <Col span={8}>
           <Card title="アクセスランキング" bordered={true}>
             <List
+              locale={{ emptyText: ' ' }}
               size="large"
               dataSource={viewList}
               renderItem={(item) => <List.Item><Link to={`/news-manage/preview/${item.id}`}>
@@ -361,6 +363,7 @@ export default function Home() {
         <Col span={8}>
           <Card title="いいねランキング" bordered={true}>
             <List
+              locale={{ emptyText: ' ' }}
               size="large"
               dataSource={startList}
               renderItem={(item) => <List.Item><Link to={`/news-manage/preview/${item.id}`}>
@@ -402,37 +405,41 @@ export default function Home() {
         </Col>
       </Row>
       <div ref={barRef} style={{ height: '500px', marginTop: 30 }}></div>
+
       <Drawer width='700px' title="詳細" placement="right" onClose={() => {
         setOpen(false)
       }} open={open}>
         <p style={{ textAlign: 'center' }}>プロフィール写真</p>
-        <Upload
-          name="avatar"
-          listType="picture-card"
-          className="avatar-uploader"
-          showUploadList={false}
-          action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
-          beforeUpload={beforeUpload}
-          onChange={handleChange}
-        >
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt="avatar"
-              style={{
-                height: '100%',
-              }}
-            />
-          ) : (
-            uploadButton
-          )}
-        </Upload>
+        <Spin spinning={imgloading} tip="アップロード中">
+          <Upload
+            name="avatar"
+            listType="picture-card"
+            className="avatar-uploader"
+            showUploadList={false}
+            action="https://run.mocky.io/v3/435e224c-44fb-4773-9faf-380c5e6a2188"
+            beforeUpload={beforeUpload}
+            onChange={handleChange}
+          >
+            {imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="avatar"
+                style={{
+                  height: '100%',
+                }}
+              />
+            ) : (
+              uploadButton
+            )}
+          </Upload>
+        </Spin>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Button style={{ margin: '0 auto' }} onClick={() => { avatarChange() }}>更新</Button>
         </div>
         <div ref={pieRef} style={{ height: '500px', marginTop: 30 }}></div>
         <div ref={accessRef} style={{ height: '500px', marginTop: 30 }}></div>
       </Drawer>
+
     </div>
 
   )

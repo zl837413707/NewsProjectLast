@@ -1,39 +1,26 @@
-import React, { useEffect, useState, lazy, Suspense } from 'react'
+import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Spin } from 'antd';
 import { useSelector } from 'react-redux';
-import axiosinstance from '../../utils/index'
-const Home = lazy(() => import('../../views/sanbox/home/Home'));
-const UserList = lazy(() => import('../../views/sanbox/user-manage/UserList'));
-const RoleList = lazy(() => import('../../views/sanbox/right-manage/RoleList'));
-const RightList = lazy(() => import('../../views/sanbox/right-manage/RightList'));
-const Nopermission = lazy(() => import('../../components/sanbox/Nopermission'));
-const NewsAdd = lazy(() => import('../../views/sanbox/news-manage/NewsAdd'));
-const NewsDraft = lazy(() => import('../../views/sanbox/news-manage/NewsDraft'));
-const NewsCategory = lazy(() => import('../../views/sanbox/news-manage/NewsCategory'));
-const NewsPreview = lazy(() => import('../../views/sanbox/news-manage/NewsPreview'));
-const NewsUpdate = lazy(() => import('../../views/sanbox/news-manage/NewsUpdate'));
-const Audit = lazy(() => import('../../views/sanbox/audit-manage/Audit'));
-const AuditList = lazy(() => import('../../views/sanbox/audit-manage/AuditList'));
-const Unpublished = lazy(() => import('../../views/sanbox/publish-manage/Unpublished'));
-const Published = lazy(() => import('../../views/sanbox/publish-manage/Published'));
-const Sunset = lazy(() => import('../../views/sanbox/publish-manage/Sunset'));
+import Home from '../../views/sanbox/home/Home';
+import UserList from '../../views/sanbox/user-manage/UserList';
+import RoleList from '../../views/sanbox/right-manage/RoleList';
+import RightList from '../../views/sanbox/right-manage/RightList';
+import Nopermission from '../../components/sanbox/Nopermission';
+import NewsAdd from '../../views/sanbox/news-manage/NewsAdd';
+import NewsDraft from '../../views/sanbox/news-manage/NewsDraft';
+import NewsCategory from '../../views/sanbox/news-manage/NewsCategory';
+import NewsPreview from '../../views/sanbox/news-manage/NewsPreview';
+import NewsUpdate from '../../views/sanbox/news-manage/NewsUpdate';
+import Audit from '../../views/sanbox/audit-manage/Audit';
+import AuditList from '../../views/sanbox/audit-manage/AuditList';
+import Unpublished from '../../views/sanbox/publish-manage/Unpublished';
+import Published from '../../views/sanbox/publish-manage/Published';
+import Sunset from '../../views/sanbox/publish-manage/Sunset';
 
-export default function NewsRouter() {
-  //这是从localStorage拿的,node的时候再考虑如何获取这些信息
-  const userInfoData = useSelector(state => state.UserInfoReducer)
-  const [routeList, setRouteList] = useState([])
-  const [dataLoaded, setDataLoaded] = useState(false)
-  const loadingState = useSelector(state => state.LoadingReducer.isLoading)
-
-  useEffect(() => {
-    axiosinstance.get('/allrights').then((res) => {
-      setRouteList(res.data)
-      setDataLoaded(true)
-    }).catch(err => {
-      console.log(err);
-    })
-  }, [])
+const NewsRouter = React.memo(({ routeList }) => {
+  const userInfoData = useSelector(state => state.UserInfoReducer);
+  const loadingState = useSelector(state => state.LoadingReducer.isLoading);
 
   const RouterList = {
     "/home": <Home />,
@@ -50,30 +37,24 @@ export default function NewsRouter() {
     "/publish-manage/unpublished": <Unpublished />,
     "/publish-manage/published": <Published />,
     "/publish-manage/sunset": <Sunset />
-  }
+  };
+
   const isPerssion = (item) => {
     if (userInfoData.rightContent) {
-      return userInfoData.rightContent.includes(item.key) && (item.pagepermisson === 1 || item.routepermisson === 1)
+      return userInfoData.rightContent.includes(item.key) && (item.pagepermisson === 1 || item.routepermisson === 1);
     }
-    return null
-  }
+    return null;
+  };
 
   return (
     <Spin spinning={loadingState} size='large'>
-      <Suspense>
-        <Routes>
-          {
-            routeList.map(item => {
-              if (isPerssion(item)) {
-                return <Route key={item.key} path={item.key} element={RouterList[item.key]} exact />
-              }
-              return null
-            })
-          }
-          <Route path='/' element={<Navigate to="/home" replace />} />
-          {dataLoaded && <Route path='*' element={<Nopermission />} />}
-        </Routes>
-      </Suspense>
+      <Routes>
+        {routeList.map(item => isPerssion(item) && <Route key={item.key} path={item.key} element={RouterList[item.key]} exact />)}
+        <Route path='/' element={<Navigate to="/home" replace />} />
+        {(routeList.length > 0) && <Route path='*' element={<Nopermission />} />}
+      </Routes>
     </Spin>
-  )
-}
+  );
+});
+
+export default NewsRouter;

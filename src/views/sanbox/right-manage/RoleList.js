@@ -105,7 +105,7 @@ export default function RoleList() {
 
   return (
     <div>
-      <Table dataSource={dataSource} columns={columns} rowKey={(item) => item.roleId}></Table>
+      <Table locale={{ emptyText: ' ' }} dataSource={dataSource} columns={columns} rowKey={(item) => item.roleId}></Table>
       <Modal title="権限一覧" open={isModalOpen} onOk={handleOk} onCancel={() => { setIsModalOpen(false) }}>
         <Tree checkable treeData={rightList} checkedKeys={currentRightList} onCheck={onCheck} checkStrictly={false} />
       </Modal>

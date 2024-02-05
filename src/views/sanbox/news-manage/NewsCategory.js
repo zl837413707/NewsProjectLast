@@ -134,7 +134,7 @@ export default function RIghtList() {
 
   return (
     <div>
-      <Table style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} pagination={{
+      <Table locale={{ emptyText: ' ' }} style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} pagination={{
         pageSize: 6
       }} rowKey={item => item.id} components={{
         body: {

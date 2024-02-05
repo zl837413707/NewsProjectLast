@@ -177,7 +177,7 @@ export default function UserList() {
       <Button type="primary" icon={<UserAddOutlined />} onClick={() => { setOpen(true) }}>
         追加
       </Button>
-      <Table style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} rowKey={(item) => item.id} pagination={{
+      <Table style={{ overflow: 'auto' }} dataSource={dataSource} columns={columns} rowKey={(item) => item.id} locale={{ emptyText: ' ' }} pagination={{
         pageSize: 7
       }} />
       <Modal
