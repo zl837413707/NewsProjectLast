@@ -32,7 +32,7 @@ export default function Login() {
 
 
   return <div className="loginBack">
-    <Card className="setsumei" title="説明" style={{ position: 'fixed', top: '10%', left: '10%', fontWeight: '700' }}>
+    <Card className="setsumei" title="説明" style={{ position: 'fixed', top: '1%', left: '1%', fontWeight: '700' }}>
       <p><i>ゲストサイド :</i><Tag color="orange">.../news</Tag></p>
       <p><i>スーパー管理者 :</i><Tag color="orange">username : admin</Tag><Tag color="orange">password : 123</Tag></p>
       <p><i>他のアカウント :</i><Tag color="orange">password : 123</Tag></p>

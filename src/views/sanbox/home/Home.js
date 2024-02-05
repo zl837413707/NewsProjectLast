@@ -330,7 +330,11 @@ export default function Home() {
         if (status === 200) {
           setImageUrl(null)
           setOpen(false)
-          window.location.reload()
+          axiosInstance(`/geravatar/${userInfoData.id}`).then((res) => {
+            setCurrentAvatar(res.data[0].avatar)
+          }).catch(err => {
+            console.log(err)
+          },)
         }
       }).catch(err => {
         console.log(err);
