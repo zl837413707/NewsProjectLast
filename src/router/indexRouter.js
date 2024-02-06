@@ -1,9 +1,9 @@
-import React, { useEffect, lazy, Suspense } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-const Login = lazy(() => import('../views/Login/Login'));
-const NewsSandBox = lazy(() => import('../views/sanbox/NewSandBox'));
-const News = lazy(() => import('../views/news/news/News'));
-const Detail = lazy(() => import('../views/news/detail/Detail'));
+import Login from '../views/Login/Login';
+import NewsSandBox from '../views/sanbox/NewSandBox';
+import News from '../views/news/news/News';
+import Detail from '../views/news/detail/Detail';
 
 export default function IndexRouter() {
     function PrivateRoute() {
@@ -18,11 +18,25 @@ export default function IndexRouter() {
 
         return token ? <NewsSandBox /> : null;
     }
+
+    function RedirectToLogin() {
+        const navigate = useNavigate();
+        const token = localStorage.getItem('nodeToken');
+
+        useEffect(() => {
+            if (token) {
+                alert("ログアウトしてください");
+                navigate('/');
+            }
+        }, [token, navigate]);
+
+        return token ? null : <Login />;
+    }
     return (
         <BrowserRouter>
             <Suspense>
                 <Routes>
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/login" element={<RedirectToLogin />} />
                     <Route path="/news" element={<News />} />
                     <Route path="/detail/:id" element={<Detail />} />
                     <Route

@@ -4,3 +4,11 @@
   border-top: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
 }
+
+.newsContent pre,.newsContent p,.newsContenth1,.newsContent h2{
+  white-space: normal;
+}
+
+.newsContent img{
+  width: 100%;
+}

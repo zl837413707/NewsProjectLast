@@ -105,7 +105,7 @@ export default function NewsPreview() {
   return (
     <div style={{ paddingBottom: 50, maxWidth: '2000px' }}>
       <Button style={{ margin: '30px 0 30px 0' }} icon={<ArrowLeftOutlined />} onClick={() => { navigate(-1) }} ></Button>
-      <Descriptions layout="vertical" title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.newsTitle}--{newsInfo?.title}
+      <Descriptions className={style.top} layout="vertical" title={<span style={{ marginLeft: 25, fontSize: 20 }}>{newsInfo?.newsTitle}--{newsInfo?.title}
         <span style={{ cursor: 'pointer', marginLeft: 10 }} onClick={likeClick}><LikeFilled style={{ fontSize: 20, color: like ? 'red' : '' }} /></span></span>}
         bordered items={items} contentStyle={{ width: '100px' }} labelStyle={{ width: '100px' }} />
       <div className={style.newsContent} dangerouslySetInnerHTML={{ __html: newsInfo.content }}></div>

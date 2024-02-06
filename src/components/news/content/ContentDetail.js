@@ -118,8 +118,12 @@ export default function ContentDetail(props) {
   }
 
 
-  const startIndex = (currentPage - 1) * pageSize
-  const endIndex = startIndex + pageSize
+  let startIndex = (currentPage - 1) * pageSize
+  let endIndex = startIndex + pageSize
+  if (newsList.length <= 7) {
+    startIndex = 0
+    endIndex = 7
+  }
   const currentDisplayItems = newsList.slice(startIndex, endIndex)
 
   const handlePageChange = (page, pageSize) => {
