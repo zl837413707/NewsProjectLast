@@ -31,7 +31,7 @@ function TopHeader(props) {
   const items = [
     {
       key: '1',
-      label: 'ロックアウト',
+      label: 'ログアウト',
       icon: <SmileOutlined />,
     }
   ];
