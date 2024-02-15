@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {
   UnorderedListOutlined
-} from '@ant-design/icons';
+} from '@ant-design/icons'
 import { Table, Button, Modal, Tree } from 'antd'
-import axiosInstance from '../../../utils/index';
+import axiosInstance from '../../../utils/index'
 
 
 export default function RoleList() {
@@ -11,7 +11,7 @@ export default function RoleList() {
   const [rightList, setRightList] = useState([])
   const [currentRightList, setcurrentRightList] = useState([])
   const [currentId, setCurrentId] = useState(0)
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false)
   // 表格数据
   const columns = [
     {
@@ -43,14 +43,14 @@ export default function RoleList() {
     axiosInstance.get('/allrolespath').then((res) => {
       setDataSource(res.data)
     }).catch(err => {
-      console.log(err);
+      console.log(err)
     })
   }, [])
 
   useEffect(() => {
     axiosInstance.get('/allrights').then((res) => {
       const restructuredData = [];
-      const topLevelItems = res.data.filter(item => !item.rightId);
+      const topLevelItems = res.data.filter(item => !item.rightId)
       topLevelItems.forEach(topItem => {
         const newItem = {
           title: topItem.label,
@@ -62,7 +62,7 @@ export default function RoleList() {
         };
 
         // 获取子菜单
-        const children = res.data.filter(item => item.rightId === topItem.id);
+        const children = res.data.filter(item => item.rightId === topItem.id)
         children.forEach(child => {
           const newChild = {
             title: child.label,
@@ -73,14 +73,14 @@ export default function RoleList() {
             disableCheckbox: child.pagepermisson === null ? true : false
             // 可以根据需要将其他属性添加到子级对象中
           };
-          newItem.children.push(newChild);
+          newItem.children.push(newChild)
         });
 
-        restructuredData.push(newItem);
+        restructuredData.push(newItem)
       })
       setRightList(restructuredData)
     }).catch(err => {
-      console.log(err);
+      console.log(err)
     })
   }, [])
 
@@ -99,7 +99,11 @@ export default function RoleList() {
   }
 
   const onCheck = (checkedKeys) => {
-    if (currentId === 1) return
+    console.log(checkedKeys);
+    if (currentId === 1) {
+      alert('スーパー管理者の権限を操作できません')
+      return
+    }
     setcurrentRightList(checkedKeys)
   }
 

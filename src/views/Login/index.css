@@ -42,7 +42,8 @@
 
 .setsumei p i{
   display: inline-block;
-  width: 120px;
+  /* width: 120px; */
+  margin-right: 10px;
 }
 
 .loginClass{
@@ -63,4 +64,8 @@
   text-align: center;
   line-height: 60px;
   height: 60px;
+}
+
+.ant-card-body{
+  padding: 5px !important;
 }

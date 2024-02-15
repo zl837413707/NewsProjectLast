@@ -40,6 +40,8 @@ export default function RIghtList() {
 
   // 修改标题
   const handleSave = (item) => {
+    if (item.title === dataSource[item.id - 1].title) return
+
     axiosInstance.patch(`/updatecategories/${item.id}`, {
       title: item.title,
       value: item.title

@@ -89,7 +89,7 @@ export default function NewsAdd() {
   };
 
   return (
-    <div style={{ width: 1200, margin: '0 auto' }}>
+    <div style={{ margin: '0 auto' }}>
       <Button style={{ marginBottom: 20 }} icon={<ArrowLeftOutlined />} onClick={() => { navigate(-1) }} ></Button>
       <Steps style={{ marginTop: 20 }}
         current={current}
