@@ -53,7 +53,6 @@ export default function NewsAdd() {
   const handleNext = () => {
     if (current === 0) {
       form.validateFields().then((res) => {
-        console.log(res);
         //current0的数据
         setNewsInfo(res)
         setCurrent(current + 1)

@@ -99,7 +99,6 @@ export default function RoleList() {
   }
 
   const onCheck = (checkedKeys) => {
-    console.log(checkedKeys);
     if (currentId === 1) {
       alert('スーパー管理者の権限を操作できません')
       return
