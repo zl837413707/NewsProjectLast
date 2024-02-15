@@ -1,9 +1,9 @@
 import React, { useEffect, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import Login from '../views/Login/Login';
-import NewsSandBox from '../views/sanbox/NewSandBox';
-import News from '../views/news/news/News';
-import Detail from '../views/news/detail/Detail';
+const Login = React.lazy(() => import('../views/Login/Login'));
+const NewsSandBox = React.lazy(() => import('../views/sanbox/NewSandBox'));
+const News = React.lazy(() => import('../views/news/news/News'));
+const Detail = React.lazy(() => import('../views/news/detail/Detail'));
 
 export default function IndexRouter() {
     function PrivateRoute() {

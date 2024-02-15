@@ -1,22 +1,22 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { Spin } from 'antd';
 import { useSelector } from 'react-redux';
-import Home from '../../views/sanbox/home/Home';
-import UserList from '../../views/sanbox/user-manage/UserList';
-import RoleList from '../../views/sanbox/right-manage/RoleList';
-import RightList from '../../views/sanbox/right-manage/RightList';
-import Nopermission from '../../components/sanbox/Nopermission';
-import NewsAdd from '../../views/sanbox/news-manage/NewsAdd';
-import NewsDraft from '../../views/sanbox/news-manage/NewsDraft';
-import NewsCategory from '../../views/sanbox/news-manage/NewsCategory';
-import NewsPreview from '../../views/sanbox/news-manage/NewsPreview';
-import NewsUpdate from '../../views/sanbox/news-manage/NewsUpdate';
-import Audit from '../../views/sanbox/audit-manage/Audit';
-import AuditList from '../../views/sanbox/audit-manage/AuditList';
-import Unpublished from '../../views/sanbox/publish-manage/Unpublished';
-import Published from '../../views/sanbox/publish-manage/Published';
-import Sunset from '../../views/sanbox/publish-manage/Sunset';
+const Home = React.lazy(() => import('../../views/sanbox/home/Home'));
+const UserList = React.lazy(() => import('../../views/sanbox/user-manage/UserList'));
+const RoleList = React.lazy(() => import('../../views/sanbox/right-manage/RoleList'));
+const RightList = React.lazy(() => import('../../views/sanbox/right-manage/RightList'));
+const Nopermission = React.lazy(() => import('../../components/sanbox/Nopermission'));
+const NewsAdd = React.lazy(() => import('../../views/sanbox/news-manage/NewsAdd'));
+const NewsDraft = React.lazy(() => import('../../views/sanbox/news-manage/NewsDraft'));
+const NewsCategory = React.lazy(() => import('../../views/sanbox/news-manage/NewsCategory'));
+const NewsPreview = React.lazy(() => import('../../views/sanbox/news-manage/NewsPreview'));
+const NewsUpdate = React.lazy(() => import('../../views/sanbox/news-manage/NewsUpdate'));
+const Audit = React.lazy(() => import('../../views/sanbox/audit-manage/Audit'));
+const AuditList = React.lazy(() => import('../../views/sanbox/audit-manage/AuditList'));
+const Unpublished = React.lazy(() => import('../../views/sanbox/publish-manage/Unpublished'));
+const Published = React.lazy(() => import('../../views/sanbox/publish-manage/Published'));
+const Sunset = React.lazy(() => import('../../views/sanbox/publish-manage/Sunset'));
 
 const NewsRouter = React.memo(({ routeList }) => {
   const userInfoData = useSelector(state => state.UserInfoReducer);
@@ -48,11 +48,13 @@ const NewsRouter = React.memo(({ routeList }) => {
 
   return (
     <Spin spinning={loadingState} size='large'>
-      <Routes>
-        {routeList.map(item => isPerssion(item) && <Route key={item.key} path={item.key} element={RouterList[item.key]} exact />)}
-        <Route path='/' element={<Navigate to="/home" replace />} />
-        {(routeList.length > 0) && <Route path='*' element={<Nopermission />} />}
-      </Routes>
+      <Suspense>
+        <Routes>
+          {routeList.map(item => isPerssion(item) && <Route key={item.key} path={item.key} element={RouterList[item.key]} exact />)}
+          <Route path='/' element={<Navigate to="/home" replace />} />
+          {(routeList.length > 0) && <Route path='*' element={<Nopermission />} />}
+        </Routes>
+      </Suspense>
     </Spin>
   );
 });
