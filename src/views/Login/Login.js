@@ -38,9 +38,7 @@ export default function Login() {
   return <div className="loginBack">
     <Card className="setsumei" title="説明" style={{ position: 'fixed', top: '1%', left: '1%', fontWeight: '700' }}>
       <p><i>ゲストサイド :</i><Tag color="orange">.../news</Tag><i>スーパー管理者 :</i><Tag color="orange">Username : admin</Tag><Tag color="orange">Password : 123</Tag><i>他のアカウント :</i><Tag color="orange">Password : 123</Tag></p>
-      {/* <p><i>スーパー管理者 :</i><Tag color="orange">username : admin</Tag><Tag color="orange">password : 123</Tag></p>
-      <p><i>他のアカウント :</i><Tag color="orange">password : 123</Tag></p> */}
-      <p><i>注意 :</i><Tag color="orange">既存のニュースとユーザーを削除しないでください。</Tag></p>
+      <p><i>注意 :</i><Tag color="orange">他人のニュースとユーザーを削除しないでください。</Tag></p>
     </Card>
     <div className="loginClass">
       <h3>ニュース情報管理システム</h3>
