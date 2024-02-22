@@ -83,6 +83,7 @@ export default function RightList() {
 
   //switch控制权限
   const switchMethod = (item) => {
+    console.log(item);
     item.pagepermisson = item.pagepermisson === 1 ? 0 : 1;
     setDataSource([...dataSource])
     if (item.grade === 1) {
@@ -91,7 +92,10 @@ export default function RightList() {
         pagepermisson: item.pagepermisson
       })
     } else {
-      console.log('000');
+      axiosInstance.patch(`/changepagepermisson/${item.id}`, {
+        grade: 2,
+        pagepermisson: item.pagepermisson
+      })
     }
 
   }

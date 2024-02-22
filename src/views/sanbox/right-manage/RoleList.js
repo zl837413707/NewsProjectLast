@@ -87,7 +87,7 @@ export default function RoleList() {
   // 编辑对话框
   const handleOk = (item) => {
     axiosInstance.patch(`/updateallrolespath/${currentId}`, {
-      rightContent: currentRightList
+      rightContent: currentRightList.checked
     })
     setIsModalOpen(false)
     setDataSource(dataSource.map((item) => {
@@ -110,7 +110,7 @@ export default function RoleList() {
     <div>
       <Table locale={{ emptyText: ' ' }} dataSource={dataSource} columns={columns} rowKey={(item) => item.roleId}></Table>
       <Modal title="権限一覧" open={isModalOpen} onOk={handleOk} onCancel={() => { setIsModalOpen(false) }}>
-        <Tree checkable treeData={rightList} checkedKeys={currentRightList} onCheck={onCheck} checkStrictly={false} />
+        <Tree checkable treeData={rightList} checkedKeys={currentRightList} onCheck={onCheck} checkStrictly={true} />
       </Modal>
     </div>
   )
