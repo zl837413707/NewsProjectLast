@@ -62,7 +62,7 @@ const UserForm1 = forwardRef((props, ref) => {
           setRegionList(newRegionList)
           //角色设置
           const newRoleList = props.roleList.map(obj => {
-            if (obj.id <= userInfoData.roleId) {
+            if (obj.roleId <= userInfoData.roleId) {
               return { ...obj, disabled: true }
             }
             return obj

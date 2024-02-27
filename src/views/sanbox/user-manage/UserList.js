@@ -191,7 +191,7 @@ export default function UserList() {
         }}
         onOk={addFormData}
       >
-        <UserForm ref={addForm} regionList={regionList} roleList={roleList}></UserForm>
+        <UserForm ref={addForm} regionList={regionList} roleList={roleList} isedit={false}></UserForm>
       </Modal>
       <Modal
         open={update}
