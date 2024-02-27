@@ -30,7 +30,7 @@ export default function Login() {
     } catch (err) {
       console.log(err);
     } finally {
-      setLoading(false); // 无论登录成功还是失败，都重置loading为false
+      setLoading(false);
     }
   }
 

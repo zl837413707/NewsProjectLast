@@ -1,5 +1,6 @@
 import React, { useEffect, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
 import Login from '../views/Login/Login';
 import NewsSandBox from '../views/sanbox/NewSandBox';
 import News from '../views/news/news/News';
@@ -13,6 +14,13 @@ export default function IndexRouter() {
         useEffect(() => {
             if (!token) {
                 navigate('/login');
+            } else {
+                const decodedToken = jwtDecode(token);
+                const currentTime = Date.now() / 1000;
+                if (decodedToken.exp < currentTime) {
+                    localStorage.removeItem('nodeToken');
+                    navigate('/login');
+                }
             }
         }, [token, navigate]);
 
