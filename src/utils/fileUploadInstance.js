@@ -3,7 +3,7 @@ import { store } from '../redux/store';
 
 const fileUploadInstance = axios.create({
   // baseURL: 'http://127.0.0.1:8103/api',
-  baseURL: 'https://node-gamma-five.vercel.app/api',
+  baseURL: 'https://node-self.vercel.app/api',
   timeout: 10000, // 设置请求超时时间
 });
 
