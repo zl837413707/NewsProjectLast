@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom';
-import { Descriptions, Button, Statistic } from 'antd';
-import { ArrowLeftOutlined } from '@ant-design/icons';
-import moment from 'moment';
+import { useParams, useNavigate } from 'react-router-dom'
+import { Descriptions, Button, Statistic } from 'antd'
+import { ArrowLeftOutlined } from '@ant-design/icons'
+import moment from 'moment'
 import style from './NewsPreview.module.css'
-import axiosInstance from '../../../utils/index';
+import axiosInstance from '../../../utils/index'
 
 export default function NewsPreview() {
   const [newsInfo, setNewsInfo] = useState([])
@@ -13,7 +13,7 @@ export default function NewsPreview() {
 
   useEffect(() => {
     axiosInstance.get(`/getallnews`).then((res) => {
-      const newData = res.data.filter(item => item.id.toString() === id);
+      const newData = res.data.filter(item => item.id.toString() === id)
       setNewsInfo(newData[0])
     })
   }, [id])
@@ -24,15 +24,15 @@ export default function NewsPreview() {
   const getColorByPublishState = (state) => {
     switch (state) {
       case 0:
-        return { color: 'red', fontWeight: 'bold' };
+        return { color: 'red', fontWeight: 'bold' }
       case 1:
-        return { color: 'orange', fontWeight: 'bold' };
+        return { color: 'orange', fontWeight: 'bold' }
       case 2:
-        return { color: 'green', fontWeight: 'bold' };
+        return { color: 'green', fontWeight: 'bold' }
       case 3:
-        return { color: 'gray', fontWeight: 'bold' };
+        return { color: 'gray', fontWeight: 'bold' }
       default:
-        return { color: 'black', fontWeight: 'bold' };
+        return { color: 'black', fontWeight: 'bold' }
     }
   }
 

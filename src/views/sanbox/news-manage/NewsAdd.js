@@ -22,7 +22,7 @@ export default function NewsAdd() {
       })
       setCategoriesList(newdata)
     }).catch(err => {
-      console.log(err);
+      console.log(err)
     })
   }, [])
 
@@ -37,15 +37,14 @@ export default function NewsAdd() {
       title: 'ニュース提出'
     },
   ]
-  //  点击下一步
+  //  次
   const handleNext = () => {
     if (current === 0) {
       form.validateFields().then((res) => {
-        //current0的数据
         setNewsInfo(res)
         setCurrent(current + 1)
       }).catch((err) => {
-        console.log(err);
+        console.log(err)
       })
     } else {
       if (isEmptyContent(newsContent)) {
@@ -79,7 +78,7 @@ export default function NewsAdd() {
     const trimmedContent = content.trim()
     const regex = /^(\s*<p>\s*<\/p>\s*)*$/gi
     return trimmedContent === '' || regex.test(trimmedContent)
-  };
+  }
 
   return (
     <div style={{ margin: '0 auto' }}>
@@ -124,13 +123,11 @@ export default function NewsAdd() {
               ]}
             >
               <Select
-                // onChange={handleChange}
                 options={categoriesList}
               />
             </Form.Item>
           </Form>
         </div>
-        {/* current1 */}
         <div className={current === 1 ? '' : style.active}>
           <NewEditor getEditorData={(data) => {
             setNewsContent(data)

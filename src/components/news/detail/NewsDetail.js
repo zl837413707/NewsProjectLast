@@ -27,9 +27,8 @@ export default function NewsPreview() {
           }
         }
 
-        // 直接更新访问量
         axiosInstance.patch(`/updatenewsaccess/${id}`, {
-          view: newData[0].view + 1 // 使用最新获取的数据更新访问量
+          view: newData[0].view + 1 
         })
           .then(() => {
             console.log('success');
@@ -72,12 +71,7 @@ export default function NewsPreview() {
       label: 'いいね数',
       children: newsInfo && newsInfo.star !== undefined ? <Statistic value={newsInfo.star} /> : null
 
-    },
-    // {
-    //   key: '6',
-    //   label: '記事本体',
-    //   children: (<div style={{ maxWidth: '3000px' }} dangerouslySetInnerHTML={{ __html: newsInfo.content }} />),
-    // },
+    }
   ]
 
   const likeClick = () => {

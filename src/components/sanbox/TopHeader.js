@@ -42,7 +42,6 @@ function TopHeader(props) {
 
   const onClick = ({ key }) => {
     if (key === '1') {
-      // 目前先用手动的，等做node的时候用正式的登入登出
       localStorage.removeItem('nodeToken')
       navigate('/login')
     }

@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import SideMenu from '../../components/sanbox/SideMenu'
 import TopHeader from '../../components/sanbox/TopHeader'
-import NewsRouter from '../../components/sanbox/NewsRouter';
+import NewsRouter from '../../components/sanbox/NewsRouter'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import axiosinstance from '../../utils/index'
 
 // antdUI
-import { Layout } from 'antd';
-const { Content } = Layout;
+import { Layout } from 'antd'
+const { Content } = Layout
 
 export default function NewsSandBox() {
   const navigate = useNavigate()
@@ -32,7 +32,7 @@ export default function NewsSandBox() {
     axiosinstance.get('/allrights').then((res) => {
       setRouteList(res.data)
     }).catch(err => {
-      console.log(err);
+      console.log(err)
     })
   }, [])
 

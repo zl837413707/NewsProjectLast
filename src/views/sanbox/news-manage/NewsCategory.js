@@ -4,7 +4,7 @@ import axiosInstance from '../../../utils/index'
 
 export default function RIghtList() {
   const [dataSource, setDataSource] = useState([])
-  const EditableContext = React.createContext(null);
+  const EditableContext = React.createContext(null)
 
   useEffect(() => {
     const getData = async () => {
@@ -15,7 +15,7 @@ export default function RIghtList() {
     getData()
   }, [])
 
-  //表格数据
+
   const columns = [
     {
       title: 'ID',
@@ -38,7 +38,6 @@ export default function RIghtList() {
   ]
 
 
-  // 修改标题
   const handleSave = (item) => {
     if (item.title === dataSource[item.id - 1].title) return
 
@@ -58,15 +57,15 @@ export default function RIghtList() {
   }
 
   const EditableRow = ({ index, ...props }) => {
-    const [form] = Form.useForm();
+    const [form] = Form.useForm()
     return (
       <Form form={form} component={false}>
         <EditableContext.Provider value={form}>
           <tr {...props} />
         </EditableContext.Provider>
       </Form>
-    );
-  };
+    )
+  }
   const EditableCell = ({
     title,
     editable,
@@ -76,33 +75,33 @@ export default function RIghtList() {
     handleSave,
     ...restProps
   }) => {
-    const [editing, setEditing] = useState(false);
-    const inputRef = useRef(null);
-    const form = useContext(EditableContext);
+    const [editing, setEditing] = useState(false)
+    const inputRef = useRef(null)
+    const form = useContext(EditableContext)
     useEffect(() => {
       if (editing) {
-        inputRef.current.focus();
+        inputRef.current.focus()
       }
-    }, [editing]);
+    }, [editing])
     const toggleEdit = () => {
-      setEditing(!editing);
+      setEditing(!editing)
       form.setFieldsValue({
         [dataIndex]: record[dataIndex],
-      });
-    };
+      })
+    }
     const save = async () => {
       try {
-        const values = await form.validateFields();
-        toggleEdit();
+        const values = await form.validateFields()
+        toggleEdit()
         handleSave({
           ...record,
           ...values,
-        });
+        })
       } catch (errInfo) {
-        console.log('Save failed:', errInfo);
+        console.log('Save failed:', errInfo)
       }
-    };
-    let childNode = children;
+    }
+    let childNode = children
     if (editable) {
       childNode = editing ? (
         <Form.Item
@@ -129,10 +128,10 @@ export default function RIghtList() {
         >
           {children}
         </div>
-      );
+      )
     }
-    return <td {...restProps}>{childNode}</td>;
-  };
+    return <td {...restProps}>{childNode}</td>
+  }
 
   return (
     <div>

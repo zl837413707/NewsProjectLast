@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState } from "react"
 import {
   LockOutlined, UserOutlined
-} from '@ant-design/icons';
-import { Button, Form, Input, message, Card, Tag, Spin } from 'antd';
+} from '@ant-design/icons'
+import { Button, Form, Input, message, Card, Tag, Spin } from 'antd'
 import { useNavigate } from 'react-router-dom'
 import axiosinstance from '../../utils/index'
 import './index.css'
@@ -10,27 +10,27 @@ import './index.css'
 
 
 export default function Login() {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false); // 新增loading状态
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false) // loding状況追加
 
   const onFinish = async (values) => {
     try {
-      setLoading(true); // 开始登录时设置loading为true
+      setLoading(true)
       const res = await axiosinstance.post("/login", {
         username: values.username,
         password: values.password,
-      });
+      })
 
-      localStorage.setItem("nodeToken", JSON.stringify(res.data.token));
+      localStorage.setItem("nodeToken", JSON.stringify(res.data.token))
       if (res.data.token) {
-        navigate("/");
+        navigate("/")
       } else {
-        message.error("アカウントまたはパスワードが間違えました");
+        message.error("アカウントまたはパスワードが間違えました")
       }
     } catch (err) {
-      console.log(err);
+      console.log(err)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
   }
 
@@ -73,5 +73,5 @@ export default function Login() {
         </Form>
       </Spin>
     </div>
-  </div>;
+  </div>
 }

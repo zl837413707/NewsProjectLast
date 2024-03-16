@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import { Table, Tag, Button, message } from 'antd'
 import {
   ToTopOutlined, RollbackOutlined
-} from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+} from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 import axiosInstance from '../../../utils/index'
 
 export default function AuditList() {

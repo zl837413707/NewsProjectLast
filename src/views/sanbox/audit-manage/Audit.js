@@ -4,8 +4,8 @@ import axiosInstance from '../../../utils/index'
 import { Table, Button, message } from 'antd'
 import {
   CloseOutlined, CheckOutlined
-} from '@ant-design/icons';
-import { Link } from 'react-router-dom';
+} from '@ant-design/icons'
+import { Link } from 'react-router-dom'
 
 export default function Audit() {
   const [dataSource, setDataSource] = useState([])

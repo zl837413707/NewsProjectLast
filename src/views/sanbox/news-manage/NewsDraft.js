@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import {
   EditOutlined, UploadOutlined, DeleteOutlined, ExclamationCircleFilled,
@@ -75,7 +75,7 @@ export default function NewsDraft() {
       onOk() {
         okMethod(item)
       }
-    });
+    })
   }
   //弹出框确认方法
   const okMethod = (item) => {

@@ -30,7 +30,7 @@ export default function UserList() {
           ...sortedData.filter(item => item.region === userInfoData.region && item.roleId !== userInfoData.roleId)
         ])
       }).catch((err) => {
-        console.log(err);
+        console.log(err)
       })
     }
   }, [userInfoData])
@@ -39,7 +39,7 @@ export default function UserList() {
     axiosInstance.get('/allregions').then((res) => {
       setRegionList(res.data)
     }).catch((err) => {
-      console.log(err);
+      console.log(err)
     })
   }, [])
 
@@ -47,7 +47,7 @@ export default function UserList() {
     axiosInstance.get('/allroles').then((res) => {
       setRoleList(res.data)
     }).catch((err) => {
-      console.log(err);
+      console.log(err)
     })
   }, [])
 
@@ -155,7 +155,7 @@ export default function UserList() {
         console.log(err)
       })
     }).catch((err) => {
-      console.log(err);
+      console.log(err)
     })
   }
   // Userデータ更新
@@ -167,7 +167,7 @@ export default function UserList() {
         ...sortedData.filter(item => item.region === userInfoData.region && item.roleId !== userInfoData.roleId)
       ])
     }).catch((err) => {
-      console.log(err);
+      console.log(err)
     })
   }
 

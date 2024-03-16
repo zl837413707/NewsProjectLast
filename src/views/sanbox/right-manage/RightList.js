@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import {
   SendOutlined, SettingOutlined, CheckOutlined, CloseOutlined
-} from '@ant-design/icons';
+} from '@ant-design/icons'
 import { Table, Tag, Button, Popover, Switch } from 'antd'
-import axiosInstance from '../../../utils/index';
+import axiosInstance from '../../../utils/index'
 import './index.css'
 
 export default function RightList() {
@@ -11,8 +11,8 @@ export default function RightList() {
 
   useEffect(() => {
     axiosInstance.get('/allrights').then((res) => {
-      const restructuredData = [];
-      const topLevelItems = res.data.filter(item => !item.rightId);
+      const restructuredData = []
+      const topLevelItems = res.data.filter(item => !item.rightId)
       topLevelItems.forEach(topItem => {
         const newItem = {
           label: topItem.label,
@@ -21,10 +21,10 @@ export default function RightList() {
           pagepermisson: topItem.pagepermisson,
           grade: topItem.grade,
           children: []
-        };
+        }
 
         // 获取子菜单
-        const children = res.data.filter(item => item.rightId === topItem.id);
+        const children = res.data.filter(item => item.rightId === topItem.id)
         children.forEach(child => {
           const newChild = {
             label: child.label,
@@ -34,17 +34,17 @@ export default function RightList() {
             grade: child.grade,
             pagepermisson: child.pagepermisson
             // 可以根据需要将其他属性添加到子级对象中
-          };
-          newItem.children.push(newChild);
-        });
+          }
+          newItem.children.push(newChild)
+        })
         if (newItem.children.length === 0) {
-          delete newItem.children;
+          delete newItem.children
         }
-        restructuredData.push(newItem);
+        restructuredData.push(newItem)
       })
       setDataSource(restructuredData)
     }).catch(err => {
-      console.log(err);
+      console.log(err)
     })
   }, [])
 
@@ -73,7 +73,7 @@ export default function RightList() {
       title: '操作',
       render: (item) => {
         return <div>
-          <Popover content={<div style={{ textAlign: 'center' }}><Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} checked={item.pagepermisson} disabled={item.key === '/right-manage' ? true : false} onChange={() => switchMethod(item)}></Switch></div>} title="配置" trigger="click" >
+          <Popover content={<div style={{ textAlign: 'center' }}><Switch checkedChildren={<CheckOutlined />} unCheckedChildren={<CloseOutlined />} checked={item.pagepermisson} disabled={(item.key === '/right-manage' || item.key === '/right-manage/right/list') ? true : false} onChange={() => switchMethod(item)}></Switch></div>} title="配置" trigger="click" >
             <Button style={{ marginRight: '5px' }} type="primary" shape="circle" icon={<SettingOutlined />} disabled={item.pagepermisson === null} />
           </Popover >
         </div >
@@ -83,8 +83,8 @@ export default function RightList() {
 
   //switch控制权限
   const switchMethod = (item) => {
-    console.log(item);
-    item.pagepermisson = item.pagepermisson === 1 ? 0 : 1;
+    console.log(item)
+    item.pagepermisson = item.pagepermisson === 1 ? 0 : 1
     setDataSource([...dataSource])
     if (item.grade === 1) {
       axiosInstance.patch(`/changepagepermisson/${item.id}`, {

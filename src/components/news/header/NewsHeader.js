@@ -11,10 +11,10 @@ const { Search } = Input;
 export default function NewsHeader() {
   const dispatch = useDispatch()
   const onSearch = (value) => {
-    if (value.trim() === '') {
-      message.warning('タイトルを入力してください')
-      return
-    }
+    // if (value.trim() === '') {
+    //   message.warning('タイトルを入力してください')
+    //   return
+    // }
     axiosInstance.get('/searchnews', {
       params: {
         value: value.trim()

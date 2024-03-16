@@ -2,9 +2,9 @@ import axios from 'axios';
 import { store } from '../redux/store';
 
 const fileUploadInstance = axios.create({
-  // baseURL: 'http://127.0.0.1:8103/api',
-  baseURL: 'https://node-self.vercel.app/api',
-  timeout: 10000, // 设置请求超时时间
+  baseURL: 'http://127.0.0.1:8103/api',
+  // baseURL: 'https://node-self.vercel.app/api',
+  timeout: 10000,
 });
 
 fileUploadInstance.interceptors.request.use(
@@ -13,7 +13,7 @@ fileUploadInstance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = `${token}`;
     }
-    config.headers['Content-Type'] = 'multipart/form-data'; // 设置请求头为multipart/form-data
+    config.headers['Content-Type'] = 'multipart/form-data';
     store.dispatch({
       type: 'changeLoading',
       payload: true

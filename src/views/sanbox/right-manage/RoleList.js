@@ -49,7 +49,7 @@ export default function RoleList() {
 
   useEffect(() => {
     axiosInstance.get('/allrights').then((res) => {
-      const restructuredData = [];
+      const restructuredData = []
       const topLevelItems = res.data.filter(item => !item.rightId)
       topLevelItems.forEach(topItem => {
         const newItem = {
@@ -59,7 +59,7 @@ export default function RoleList() {
           pagepermisson: topItem.pagepermisson,
           grade: topItem.grade,
           children: []
-        };
+        }
 
         // 获取子菜单
         const children = res.data.filter(item => item.rightId === topItem.id)
@@ -72,9 +72,9 @@ export default function RoleList() {
             grade: child.grade,
             disableCheckbox: child.pagepermisson === null ? true : false
             // 可以根据需要将其他属性添加到子级对象中
-          };
+          }
           newItem.children.push(newChild)
-        });
+        })
 
         restructuredData.push(newItem)
       })

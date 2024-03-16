@@ -10,12 +10,10 @@ const UserForm1 = forwardRef((props, ref) => {
   const [roleList, setRoleList] = useState([])
 
   useEffect(() => {
-    // 判断此时点击的是更新还是编辑,以及点击的人是谁
     if (userInfoData) {
       if (props.isedit) {
         if (userInfoData.roleId === 1) {
           setRegionList(props.regionList)
-          //角色设置
           const newRoleList = props.roleList.map(obj => {
             if (obj.roleId <= userInfoData.roleId) {
               return { ...obj, disabled: true }
@@ -24,13 +22,11 @@ const UserForm1 = forwardRef((props, ref) => {
           })
           setRoleList(newRoleList)
         } else {
-          // 区域设置
           const newRegionList = props.regionList.map(obj => ({
             ...obj,
             disabled: true
           }))
           setRegionList(newRegionList)
-          //角色设置
           const newRoleList = props.roleList.map(obj => {
             if (obj.roleId <= userInfoData.roleId) {
               return { ...obj, disabled: true }
@@ -43,7 +39,6 @@ const UserForm1 = forwardRef((props, ref) => {
       } else {
         if (userInfoData.roleId === 1) {
           setRegionList(props.regionList)
-          //角色设置
           const newRoleList = props.roleList.map(obj => {
             if (obj.roleId <= userInfoData.roleId) {
               return { ...obj, disabled: true }
@@ -52,7 +47,6 @@ const UserForm1 = forwardRef((props, ref) => {
           })
           setRoleList(newRoleList)
         } else {
-          // 区域设置
           const newRegionList = props.regionList.map(obj => {
             if (obj.title !== userInfoData.region) {
               return { ...obj, disabled: true }
@@ -60,7 +54,6 @@ const UserForm1 = forwardRef((props, ref) => {
             return { ...obj, disabled: false }
           })
           setRegionList(newRegionList)
-          //角色设置
           const newRoleList = props.roleList.map(obj => {
             if (obj.roleId <= userInfoData.roleId) {
               return { ...obj, disabled: true }

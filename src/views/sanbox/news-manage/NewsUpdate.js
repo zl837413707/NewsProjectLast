@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Steps, Button, Form, Input, Select, message } from 'antd'
-import { ArrowLeftOutlined } from '@ant-design/icons';
+import { ArrowLeftOutlined } from '@ant-design/icons'
 import style from './NewsAdd.module.css'
 import axiosInstance from '../../../utils/index'
 import NewEditor from '../../../components/news-manage/NewEditor'
@@ -22,13 +22,13 @@ export default function NewsAdd() {
       })
       setCategoriesList(newdata)
     }).catch(err => {
-      console.log(err);
+      console.log(err)
     })
   }, [])
 
   useEffect(() => {
     axiosInstance.get(`/getallnews`).then((res) => {
-      const newData = res.data.filter(item => item.id.toString() === id);
+      const newData = res.data.filter(item => item.id.toString() === id)
       form.setFieldsValue({
         title: newData[0].newsTitle,
         categoryId: newData[0].categoryId
@@ -49,15 +49,13 @@ export default function NewsAdd() {
     },
   ]
 
-  //  点击下一步
   const handleNext = () => {
     if (current === 0) {
       form.validateFields().then((res) => {
-        //current0的数据
         setNewsInfo(res)
         setCurrent(current + 1)
       }).catch((err) => {
-        console.log(err);
+        console.log(err)
       })
     } else {
       if (isEmptyContent(newsContent)) {
@@ -81,11 +79,10 @@ export default function NewsAdd() {
   }
 
   const isEmptyContent = (content) => {
-    const trimmedContent = content.trim(); // 去除两端空格
-    // 使用正则表达式匹配多个 <p> 标签或者纯空白字符
-    const regex = /^(\s*<p>\s*<\/p>\s*)*$/gi;
-    return trimmedContent === '' || regex.test(trimmedContent);
-  };
+    const trimmedContent = content.trim()
+    const regex = /^(\s*<p>\s*<\/p>\s*)*$/gi
+    return trimmedContent === '' || regex.test(trimmedContent)
+  }
 
   return (
     <div style={{ margin: '0 auto' }}>
@@ -145,8 +142,8 @@ export default function NewsAdd() {
         <div className={current === 2 ? '' : style.active}></div>
       </div>
       <div style={{ marginTop: 50 }}>
-        <Button style={{ marginRight: 20 }} disabled={current > 0 ? false : true} type='primary' onClick={() => setCurrent(current - 1)} >上一步</Button>
-        <Button style={{ marginRight: 20 }} type='primary' disabled={current < 2 ? false : true} onClick={() => handleNext()}>下一步</Button>
+        <Button style={{ marginRight: 20 }} disabled={current > 0 ? false : true} type='primary' onClick={() => setCurrent(current - 1)} >戻る</Button>
+        <Button style={{ marginRight: 20 }} type='primary' disabled={current < 2 ? false : true} onClick={() => handleNext()}>次へ</Button>
         {current === 2 && <Button style={{ marginRight: 20 }} onClick={() => { hadleSubmit(0) }}>更新</Button>}
       </div>
     </div >
